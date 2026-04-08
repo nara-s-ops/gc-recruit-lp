@@ -63,7 +63,7 @@ ul,ol{list-style:none}
 .hero-mask {
   position: relative;
   width: 100%;
-  height: 300vh; /* スクロールさせる距離を長めに確保 */
+  height: 400vh; /* アニメーションのフェーズが多いのでスクロール距離を長めに確保 */
   background: var(--dark);
 }
 .hero-mask-sticky {
@@ -101,9 +101,11 @@ ul,ol{list-style:none}
   width: 100%;
   height: 100%;
 }
-/* SVGテキストのレスポンシブ用クラス */
-.svg-text-small { font-size: 5vw; letter-spacing: 0.1em; }
-.svg-text-large { font-size: 16vw; letter-spacing: -0.02em; }
+/* SVGテキストの段階的なサイズクラス */
+.svg-text-xs { font-size: 5vw; letter-spacing: 0.2em; }
+.svg-text-sm { font-size: 10vw; letter-spacing: 0.1em; }
+.svg-text-md { font-size: 15vw; letter-spacing: 0.05em; }
+.svg-text-large { font-size: 20vw; letter-spacing: -0.02em; }
 
 /* スクロールダウンのUI */
 .hero-scroll{position:absolute;right:30px;bottom:40px;z-index:5;display:flex;flex-direction:column;align-items:center;gap:8px;writing-mode:vertical-rl}
@@ -285,8 +287,10 @@ ul,ol{list-style:none}
 
 /* ============ RESPONSIVE ============ */
 @media(max-width:1024px){
-  .svg-text-small { font-size: 8vw; }
-  .svg-text-large { font-size: 20vw; }
+  .svg-text-xs { font-size: 8vw; }
+  .svg-text-sm { font-size: 14vw; }
+  .svg-text-md { font-size: 20vw; }
+  .svg-text-large { font-size: 24vw; }
   .company-cards,.guidelines-grid{grid-template-columns:1fr}
   .jobs-grid,.members-grid{grid-template-columns:repeat(2,1fr)}
   .footer-inner{grid-template-columns:1fr}
@@ -297,9 +301,10 @@ ul,ol{list-style:none}
   .header-inner{height:60px}
   .header-nav,.header-label{display:none}
   .menu-toggle{display:block}
-  .hero-mask { height: 250vh; }
-  .svg-text-small { font-size: 14vw; }
-  .svg-text-large { font-size: 24vw; }
+  .svg-text-xs { font-size: 10vw; }
+  .svg-text-sm { font-size: 18vw; }
+  .svg-text-md { font-size: 24vw; }
+  .svg-text-large { font-size: 28vw; }
   .container{padding:0 20px}
   .section{padding:72px 0}
   .section-title{font-size:26px}
@@ -363,7 +368,7 @@ ul,ol{list-style:none}
   <a href="#entry" onclick="closeMobile()">エントリー</a>
 </div>
 
-<!-- 🌟 NEW: SVG MASK HERO -->
+<!-- 🌟 NEW: SVG MASK HERO (Phase Animation) -->
 <section class="hero-mask" id="hero">
   <div class="hero-mask-sticky">
     
@@ -381,13 +386,23 @@ ul,ol{list-style:none}
             <!-- マスク全体の背景を白（不透明＝下の要素を隠す）にする -->
             <rect width="100%" height="100%" fill="white" />
             
-            <!-- Phase 1: 小さい文字 (黒＝透過させる＝奥の画像が見える) -->
+            <!-- Phase 1: WELCOME (最小) -->
             <g id="textGroup1">
-              <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Inter, sans-serif" font-weight="900" fill="black" class="svg-text-small">GC ENTRY</text>
+              <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Inter, sans-serif" font-weight="900" fill="black" class="svg-text-xs">WELCOME</text>
             </g>
             
-            <!-- Phase 2: 巨大な文字 (初期状態は透明度0で隠しておく) -->
+            <!-- Phase 2: GC (小〜中) -->
             <g id="textGroup2" style="opacity: 0;">
+              <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Inter, sans-serif" font-weight="900" fill="black" class="svg-text-sm">GC</text>
+            </g>
+
+            <!-- Phase 3: ENTRY (大) -->
+            <g id="textGroup3" style="opacity: 0;">
+              <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Inter, sans-serif" font-weight="900" fill="black" class="svg-text-md">ENTRY</text>
+            </g>
+
+            <!-- Phase 4: GRAND CENTRAL (特大) -->
+            <g id="textGroup4" style="opacity: 0;">
               <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Inter, sans-serif" font-weight="900" fill="black" class="svg-text-large">
                 <tspan x="50%" dy="-0.45em">GRAND</tspan>
                 <tspan x="50%" dy="0.9em">CENTRAL</tspan>
@@ -633,7 +648,7 @@ setInterval(() => {
   }
 }, 4000);
 
-/* 🌟 ADDED: Advanced GSAP Animations (NOT A HOTEL Style) */
+/* 🌟 ADDED: Advanced GSAP Animations (Phase Change) */
 function initGSAP() {
   if (typeof gsap !== 'undefined') {
     gsap.registerPlugin(ScrollTrigger);
@@ -648,21 +663,32 @@ function initGSAP() {
       }
     });
 
-    // フェーズ1: 文字が GC -> GRAND CENTRAL に切り替わる
-    tl.to("#textGroup1", { opacity: 0, duration: 0.1 })
+    // 少し余韻を持たせてからアニメーション開始
+    tl.to({}, { duration: 0.2 })
+    
+    // フェーズ1: WELCOME -> GC
+      .to("#textGroup1", { opacity: 0, duration: 0.1 })
       .to("#textGroup2", { opacity: 1, duration: 0.1 }, "<")
+      .to({}, { duration: 0.3 }) // キープ
       
-    // フェーズ2: その状態を少しキープ（余韻）
-      .to({}, { duration: 0.5 })
+    // フェーズ2: GC -> ENTRY
+      .to("#textGroup2", { opacity: 0, duration: 0.1 })
+      .to("#textGroup3", { opacity: 1, duration: 0.1 }, "<")
+      .to({}, { duration: 0.3 }) // キープ
       
-    // フェーズ3: ズームイン（文字のコンテナだけが拡大し、背景画像はそのまま）
+    // フェーズ3: ENTRY -> GRAND CENTRAL
+      .to("#textGroup3", { opacity: 0, duration: 0.1 })
+      .to("#textGroup4", { opacity: 1, duration: 0.1 }, "<")
+      .to({}, { duration: 0.5 }) // 最後は少し長めにキープ
+      
+    // フェーズ4: ズームイン（文字のコンテナだけが超拡大し、背景画像はそのまま）
       .to('.hero-mask-zoom-container', {
-        scale: 40, // 画面を突き破るまで拡大
+        scale: 50, // 画面を突き破るまで拡大
         duration: 2,
         ease: "power3.in"
       })
       
-    // フェーズ4: 完全にズームしたらフェードアウトして次のセクションへ
+    // フェーズ5: 完全にズームしたらフェードアウトして次のセクションへ
       .to('.hero-mask-zoom-container', { opacity: 0, duration: 0.2 }, "-=0.2");
   }
 }
