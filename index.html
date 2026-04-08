@@ -17,7 +17,8 @@
   --dark-70: rgba(36,32,30,0.7);
   --text: #000;
   --text-sub: #333;
-  --accent: #F08200;
+  --accent: #CB984D;
+  --accent-dark: #965B19;
   --muted: #A6A691;
   --white: #fff;
   --white-50: rgba(255,255,255,0.5);
@@ -46,7 +47,7 @@ ul,ol{list-style:none}
 .header-nav a{font-size:13px;color:var(--white);font-weight:500;letter-spacing:.06em}
 .header-nav a.is-current{color:var(--accent);border-bottom:2px solid var(--accent);padding-bottom:2px}
 .header-entry{display:inline-flex;align-items:center;gap:8px;padding:10px 28px;border:1px solid var(--accent);color:var(--accent)!important;font-size:13px;font-weight:700;letter-spacing:.1em;transition:all .4s var(--ease)}
-.header-entry:hover{background:var(--accent);color:var(--white)!important;opacity:1}
+.header-entry:hover{background:var(--accent);color:var(--dark)!important;opacity:1}
 .menu-toggle{display:none;background:none;border:none;cursor:pointer;width:28px;height:20px;position:relative;z-index:1001}
 .menu-toggle span{display:block;width:100%;height:2px;background:var(--white);position:absolute;left:0;transition:.4s var(--ease)}
 .menu-toggle span:nth-child(1){top:0}
@@ -77,8 +78,9 @@ ul,ol{list-style:none}
 .hero-overlay{position:absolute;inset:0;background:rgba(0,0,0,.35);z-index:2}
 
 /* 「Join」手書きテキスト（SVGで再現） */
-.hero-join{position:absolute;z-index:3;left:0;top:50%;transform:translateY(-55%);width:80%;pointer-events:none}
-.hero-join svg{width:100%;height:auto}
+.hero-join{position:absolute;z-index:3;left:5%;top:50%;transform:translateY(-50%);width:70%;pointer-events:none}
+.hero-join img{width:100%;height:auto;filter:drop-shadow(0 4px 24px rgba(0,0,0,.3))}
+@media(max-width:768px){.hero-join{width:90%;left:2%}.hero-join img{opacity:.7}}
 
 /* 縦書きキャッチコピー */
 .hero-catch{position:absolute;right:120px;top:50%;transform:translateY(-50%);z-index:4;writing-mode:vertical-rl;font-size:42px;font-weight:900;color:var(--white);letter-spacing:.15em;line-height:1.8;text-shadow:0 2px 30px rgba(0,0,0,.4)}
@@ -188,7 +190,7 @@ ul,ol{list-style:none}
 .entry-btns{display:flex;justify-content:center;gap:16px}
 .entry-btn{display:inline-flex;align-items:center;justify-content:center;min-width:200px;padding:16px 36px;font-size:14px;font-weight:700;letter-spacing:.1em;transition:all .4s var(--ease)}
 .entry-btn--primary{background:var(--accent);color:var(--white)}
-.entry-btn--primary:hover{background:#d97300;opacity:1}
+.entry-btn--primary:hover{background:var(--accent-dark);opacity:1}
 .entry-btn--ghost{border:1px solid var(--white-50);color:var(--white)}
 .entry-btn--ghost:hover{background:rgba(255,255,255,.08);opacity:1}
 
@@ -241,7 +243,8 @@ ul,ol{list-style:none}
   .hero-catch{right:60px;font-size:26px}
   .hero-catch .sub{font-size:22px;margin-right:10px}
   .hero-side-right{display:none}
-  .hero-join svg{opacity:.6}
+  .hero-join{width:90%;left:2%}
+  .hero-join img{opacity:.7}
   .container{padding:0 20px}
   .section{padding:72px 0}
   .section-title{font-size:26px}
@@ -312,18 +315,9 @@ ul,ol{list-style:none}
   </div>
   <div class="hero-overlay"></div>
 
-  <!-- 手書き「Join」SVG -->
+  <!-- 「Join Us」SVG -->
   <div class="hero-join">
-    <svg viewBox="0 0 900 350" xmlns="http://www.w3.org/2000/svg">
-      <path d="M120 280 C120 280 130 60 135 55 C140 50 145 280 150 285 C155 290 148 310 130 320 C112 330 80 325 60 300" stroke="#F08200" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M200 180 C200 130 230 100 270 100 C310 100 340 130 340 180 C340 230 310 260 270 260 C230 260 200 230 200 180Z" stroke="#F08200" stroke-width="8" fill="none" stroke-linecap="round"/>
-      <path d="M380 100 C380 100 385 260 390 265" stroke="#F08200" stroke-width="8" fill="none" stroke-linecap="round"/>
-      <circle cx="387" cy="75" r="6" fill="#F08200"/>
-      <path d="M440 260 C440 260 450 120 460 100 C470 120 510 240 520 260" stroke="#F08200" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M450 200 L510 200" stroke="#F08200" stroke-width="6" fill="none" stroke-linecap="round"/>
-      <path d="M650 100 C600 100 570 150 570 190 C570 230 600 265 650 265 C680 265 700 245 700 245" stroke="#F08200" stroke-width="8" fill="none" stroke-linecap="round"/>
-      <path d="M700 260 C700 260 760 100 770 100 C785 100 850 260 860 265" stroke="#F08200" stroke-width="5" fill="none" stroke-linecap="round" opacity=".5"/>
-    </svg>
+    <img src="join-us.svg" alt="Join Us">
   </div>
 
   <!-- 縦書きキャッチコピー -->
