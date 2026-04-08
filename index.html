@@ -39,9 +39,10 @@ ul,ol{list-style:none}
 .header{position:fixed;top:0;left:0;width:100%;z-index:1000;padding:0 40px;transition:background .4s var(--ease)}
 .header.scrolled{background:rgba(36,32,30,.92);backdrop-filter:blur(8px)}
 .header-inner{display:flex;align-items:center;justify-content:space-between;height:80px}
-.header-logo{display:flex;align-items:center;gap:16px}
-.header-logo-mark{font-family:var(--font-en);font-weight:900;font-size:22px;color:var(--white);letter-spacing:.04em;line-height:1.1}
-.header-logo-mark span{display:block;font-size:12px;font-weight:400;letter-spacing:.12em}
+.header-logo{display:flex;align-items:center;gap:12px}
+.header-logo-icon{width:36px;height:36px}
+.header-logo-icon svg{width:100%;height:100%}
+.header-logo-text{font-family:var(--font-en);font-weight:700;font-size:20px;color:var(--white);letter-spacing:.04em}
 .header-label{font-size:12px;color:var(--white-50);letter-spacing:.12em;margin-left:12px;padding-left:12px;border-left:1px solid rgba(255,255,255,.2)}
 .header-nav{display:flex;align-items:center;gap:28px}
 .header-nav a{font-size:13px;color:var(--white);font-weight:500;letter-spacing:.06em}
@@ -57,22 +58,10 @@ ul,ol{list-style:none}
 /* ============ HERO / FIRST VIEW ============ */
 .hero{position:relative;width:100%;height:100vh;min-height:700px;overflow:hidden;background:var(--dark)}
 
-/* 斜め写真グリッド */
-.hero-photos{position:absolute;inset:0;display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(3,1fr);gap:6px;padding:6px;transform:rotate(-12deg) scale(1.4);transform-origin:center center}
-.hero-photo{background:linear-gradient(135deg,#3a3533 0%,#2a2523 100%);overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center;font-family:var(--font-en);font-size:11px;color:rgba(255,255,255,.2);letter-spacing:.1em}
-.hero-photo:nth-child(1){background:linear-gradient(135deg,#4a4240 0%,#2F2825 100%)}
-.hero-photo:nth-child(2){background:linear-gradient(135deg,#3d3835 0%,#2c2724 100%)}
-.hero-photo:nth-child(3){background:linear-gradient(135deg,#453f3c 0%,#332e2b 100%)}
-.hero-photo:nth-child(4){background:linear-gradient(135deg,#3a3432 0%,#28231f 100%)}
-.hero-photo:nth-child(5){background:linear-gradient(135deg,#403a38 0%,#2e2926 100%)}
-.hero-photo:nth-child(6){background:linear-gradient(135deg,#4d4745 0%,#363130 100%)}
-.hero-photo:nth-child(7){background:linear-gradient(135deg,#3c3735 0%,#2a2522 100%)}
-.hero-photo:nth-child(8){background:linear-gradient(135deg,#484241 0%,#302b29 100%)}
-.hero-photo:nth-child(9){background:linear-gradient(135deg,#433d3b 0%,#2d2826 100%)}
-.hero-photo:nth-child(10){background:linear-gradient(135deg,#3f3937 0%,#2b2623 100%)}
-.hero-photo:nth-child(11){background:linear-gradient(135deg,#4b4543 0%,#343030 100%)}
-.hero-photo:nth-child(12){background:linear-gradient(135deg,#3e3836 0%,#292422 100%)}
-.hero-photo::after{content:'';position:absolute;inset:0;background:rgba(0,0,0,.25)}
+/* 背景写真カルーセル */
+.hero-slider{position:absolute;inset:0;z-index:1}
+.hero-slide{position:absolute;inset:0;background-size:cover;background-position:center center;opacity:0;transition:opacity 1.6s ease-in-out}
+.hero-slide.active{opacity:1}
 
 /* オーバーレイ暗幕 */
 .hero-overlay{position:absolute;inset:0;background:rgba(0,0,0,.35);z-index:2}
@@ -98,8 +87,8 @@ ul,ol{list-style:none}
 @keyframes scrollAnim{0%{top:-100%}50%{top:0}100%{top:100%}}
 
 /* ヒーロー下部インジケータ */
-.hero-bottom{position:absolute;bottom:30px;left:40px;z-index:5;display:flex;gap:12px;align-items:center}
-.hero-bottom-bar{width:50px;height:2px;background:var(--white)}
+.hero-bottom{position:absolute;bottom:30px;left:40px;z-index:5;display:flex;gap:8px;align-items:center}
+.hero-bottom-bar{width:36px;height:2px;background:var(--white);transition:background .4s var(--ease)}
 .hero-bottom-bar.dim{background:var(--white-50)}
 
 /* ============ MESSAGE ============ */
@@ -271,7 +260,16 @@ ul,ol{list-style:none}
 <header class="header" id="header">
   <div class="header-inner">
     <a href="#" class="header-logo">
-      <div class="header-logo-mark">GC<span>GRAND CENTRAL</span></div>
+      <div class="header-logo-icon">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="50" cy="50" r="44" stroke="#fff" stroke-width="6" fill="none"/>
+          <circle cx="50" cy="50" r="28" stroke="#fff" stroke-width="6" fill="none"/>
+          <circle cx="50" cy="50" r="5" fill="#CB984D"/>
+          <line x1="55" y1="50" x2="78" y2="50" stroke="#fff" stroke-width="4"/>
+          <path d="M 82 30 A 44 44 0 0 1 94 50" stroke="#fff" stroke-width="6" fill="none" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="header-logo-text">Grand Central</div>
       <span class="header-label">採用サイト</span>
     </a>
     <nav class="header-nav">
@@ -298,20 +296,16 @@ ul,ol{list-style:none}
 
 <!-- ======== HERO ======== -->
 <section class="hero" id="hero">
-  <!-- 斜め写真グリッド -->
-  <div class="hero-photos">
-    <div class="hero-photo">PHOTO</div>
-    <div class="hero-photo">PHOTO</div>
-    <div class="hero-photo">PHOTO</div>
-    <div class="hero-photo">PHOTO</div>
-    <div class="hero-photo">PHOTO</div>
-    <div class="hero-photo">PHOTO</div>
-    <div class="hero-photo">PHOTO</div>
-    <div class="hero-photo">PHOTO</div>
-    <div class="hero-photo">PHOTO</div>
-    <div class="hero-photo">PHOTO</div>
-    <div class="hero-photo">PHOTO</div>
-    <div class="hero-photo">PHOTO</div>
+  <!-- 背景写真カルーセル -->
+  <div class="hero-slider">
+    <div class="hero-slide active" style="background-image:url('top-01.jpg')"></div>
+    <div class="hero-slide" style="background-image:url('top-02.jpg')"></div>
+    <div class="hero-slide" style="background-image:url('top-03.jpg')"></div>
+    <div class="hero-slide" style="background-image:url('top-04.jpg')"></div>
+    <div class="hero-slide" style="background-image:url('top-05.jpg')"></div>
+    <div class="hero-slide" style="background-image:url('top-06.jpg')"></div>
+    <div class="hero-slide" style="background-image:url('top-07.jpg')"></div>
+    <div class="hero-slide" style="background-image:url('top-08.jpg')"></div>
   </div>
   <div class="hero-overlay"></div>
 
@@ -339,8 +333,12 @@ ul,ol{list-style:none}
   </div>
 
   <!-- 下部インジケータ -->
-  <div class="hero-bottom">
+  <div class="hero-bottom" id="heroIndicators">
     <div class="hero-bottom-bar"></div>
+    <div class="hero-bottom-bar dim"></div>
+    <div class="hero-bottom-bar dim"></div>
+    <div class="hero-bottom-bar dim"></div>
+    <div class="hero-bottom-bar dim"></div>
     <div class="hero-bottom-bar dim"></div>
     <div class="hero-bottom-bar dim"></div>
     <div class="hero-bottom-bar dim"></div>
@@ -492,7 +490,16 @@ ul,ol{list-style:none}
   <div class="container">
     <div class="footer-inner">
       <div class="footer-brand">
-        <div class="logo">Grand Central</div>
+        <div class="logo" style="display:flex;align-items:center;gap:10px">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" width="28" height="28">
+            <circle cx="50" cy="50" r="44" stroke="#fff" stroke-width="6" fill="none"/>
+            <circle cx="50" cy="50" r="28" stroke="#fff" stroke-width="6" fill="none"/>
+            <circle cx="50" cy="50" r="5" fill="#CB984D"/>
+            <line x1="55" y1="50" x2="78" y2="50" stroke="#fff" stroke-width="4"/>
+            <path d="M 82 30 A 44 44 0 0 1 94 50" stroke="#fff" stroke-width="6" fill="none" stroke-linecap="round"/>
+          </svg>
+          Grand Central
+        </div>
         <div class="label">採用サイト</div>
         <div class="sns"><a href="#">X</a><a href="#">FB</a></div>
       </div>
@@ -511,6 +518,30 @@ ul,ol{list-style:none}
 <script>
 const header=document.getElementById('header');
 window.addEventListener('scroll',()=>{header.classList.toggle('scrolled',scrollY>50)});
+
+/* ---- Hero Image Carousel ---- */
+(function(){
+  const slides=document.querySelectorAll('.hero-slide');
+  const bars=document.querySelectorAll('#heroIndicators .hero-bottom-bar');
+  let current=0;
+  const total=slides.length;
+  const interval=4000;
+
+  function goTo(idx){
+    slides[current].classList.remove('active');
+    bars[current].classList.add('dim');
+    current=idx%total;
+    slides[current].classList.add('active');
+    bars[current].classList.remove('dim');
+  }
+
+  bars.forEach((bar,i)=>{
+    bar.style.cursor='pointer';
+    bar.addEventListener('click',()=>{ goTo(i); clearInterval(timer); timer=setInterval(()=>goTo(current+1),interval); });
+  });
+
+  let timer=setInterval(()=>goTo(current+1),interval);
+})();
 const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:.12,rootMargin:'0px 0px -40px 0px'});
 document.querySelectorAll('.fade-in,.stagger').forEach(el=>obs.observe(el));
 document.querySelectorAll('.members-filter').forEach(f=>{f.addEventListener('click',()=>{document.querySelectorAll('.members-filter').forEach(x=>x.classList.remove('active'));f.classList.add('active')})});
