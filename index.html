@@ -59,11 +59,11 @@ ul,ol{list-style:none}
 /* SCROLL PROGRESS BAR */
 .scroll-progress { position: fixed; top: 0; left: 0; width: 0%; height: 3px; background: var(--accent); z-index: 1002; transition: width 0.1s; }
 
-/* ============ HERO MASK EFFECT (TEXT CLIPPING) ============ */
+/* ============ HERO MASK EFFECT (SVG CLIPPING) ============ */
 .hero-mask {
   position: relative;
   width: 100%;
-  height: 250vh; /* スクロールアニメーション用の余白 */
+  height: 300vh; /* スクロールさせる距離を長めに確保 */
   background: var(--dark);
 }
 .hero-mask-sticky {
@@ -73,41 +73,37 @@ ul,ol{list-style:none}
   height: 100vh;
   overflow: hidden;
 }
-.hero-mask-zoom-container {
+
+/* 背面の画像スライダー（ズームしない） */
+.bg-slider-container {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 100vw;
-  height: 100vh;
-  will-change: transform, opacity;
+  inset: 0;
+  z-index: 1;
 }
-/* 巨大な文字をマスクにする */
-.mask-text-layer {
+.bg-slide {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 100%;
-  font-family: var(--font-en);
-  font-size: 16vw; /* 画面幅に応じた巨大なサイズ */
-  font-weight: 900;
-  line-height: 0.85;
-  letter-spacing: -0.02em;
-  text-align: center;
-  margin: 0;
-  text-transform: uppercase;
-  color: transparent; /* 文字色を透明に */
-  
-  /* 背景画像を指定し、文字の形に切り抜く */
+  inset: 0;
   background-size: cover;
   background-position: center;
-  background-repeat: no-repeat;
-  -webkit-background-clip: text;
-  background-clip: text;
-  
-  transition: opacity 1.6s ease-in-out;
+  transition: opacity 1s ease-in-out;
 }
+
+/* 前面のSVGマスクコンテナ（文字の枠）。これだけがズームする */
+.hero-mask-zoom-container {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  transform-origin: center center;
+  will-change: transform, opacity;
+}
+.hero-mask-zoom-container svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+/* SVGテキストのレスポンシブ用クラス */
+.svg-text-small { font-size: 5vw; letter-spacing: 0.1em; }
+.svg-text-large { font-size: 16vw; letter-spacing: -0.02em; }
 
 /* スクロールダウンのUI */
 .hero-scroll{position:absolute;right:30px;bottom:40px;z-index:5;display:flex;flex-direction:column;align-items:center;gap:8px;writing-mode:vertical-rl}
@@ -117,7 +113,7 @@ ul,ol{list-style:none}
 @keyframes scrollAnim{0%{top:-100%}50%{top:0}100%{top:100%}}
 
 /* ============ MESSAGE ============ */
-.message{background:var(--dark);padding:120px 0;position:relative}
+.message{background:var(--dark);padding:120px 0;position:relative;z-index:10;}
 .message-inner{max-width:860px;margin:0 auto;padding:0 40px;color:var(--white)}
 .message-text{font-size:16px;line-height:2.4;font-weight:300;letter-spacing:.04em}
 .message-text .hl{color:var(--accent);font-weight:700}
@@ -289,7 +285,8 @@ ul,ol{list-style:none}
 
 /* ============ RESPONSIVE ============ */
 @media(max-width:1024px){
-  .mask-text-layer { font-size: 20vw; }
+  .svg-text-small { font-size: 8vw; }
+  .svg-text-large { font-size: 20vw; }
   .company-cards,.guidelines-grid{grid-template-columns:1fr}
   .jobs-grid,.members-grid{grid-template-columns:repeat(2,1fr)}
   .footer-inner{grid-template-columns:1fr}
@@ -300,8 +297,9 @@ ul,ol{list-style:none}
   .header-inner{height:60px}
   .header-nav,.header-label{display:none}
   .menu-toggle{display:block}
-  .hero-mask { height: 150vh; }
-  .mask-text-layer { font-size: 24vw; }
+  .hero-mask { height: 250vh; }
+  .svg-text-small { font-size: 14vw; }
+  .svg-text-large { font-size: 24vw; }
   .container{padding:0 20px}
   .section{padding:72px 0}
   .section-title{font-size:26px}
@@ -365,13 +363,43 @@ ul,ol{list-style:none}
   <a href="#entry" onclick="closeMobile()">エントリー</a>
 </div>
 
-<!-- 🌟 NEW TEXT MASK HERO -->
+<!-- 🌟 NEW: SVG MASK HERO -->
 <section class="hero-mask" id="hero">
   <div class="hero-mask-sticky">
-    <div class="hero-mask-zoom-container">
-      <div class="mask-text-layer" id="maskLayer1">GRAND<br>CENTRAL</div>
-      <div class="mask-text-layer" id="maskLayer2">GRAND<br>CENTRAL</div>
+    
+    <!-- 背面の画像スライダー（スクロールしてもサイズは変わらない） -->
+    <div class="bg-slider-container">
+      <div class="bg-slide" id="bg-slide-1"></div>
+      <div class="bg-slide" id="bg-slide-2"></div>
     </div>
+
+    <!-- 前面のSVG文字マスクコンテナ（これだけがズームする） -->
+    <div class="hero-mask-zoom-container">
+      <svg width="100%" height="100%">
+        <defs>
+          <mask id="textMask">
+            <!-- マスク全体の背景を白（不透明＝下の要素を隠す）にする -->
+            <rect width="100%" height="100%" fill="white" />
+            
+            <!-- Phase 1: 小さい文字 (黒＝透過させる＝奥の画像が見える) -->
+            <g id="textGroup1">
+              <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Inter, sans-serif" font-weight="900" fill="black" class="svg-text-small">GC™</text>
+            </g>
+            
+            <!-- Phase 2: 巨大な文字 (初期状態は透明度0で隠しておく) -->
+            <g id="textGroup2" style="opacity: 0;">
+              <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Inter, sans-serif" font-weight="900" fill="black" class="svg-text-large">
+                <tspan x="50%" dy="-0.45em">GRAND</tspan>
+                <tspan x="50%" dy="0.9em">CENTRAL</tspan>
+              </text>
+            </g>
+          </mask>
+        </defs>
+        <!-- テーマカラーのダーク色で画面を覆い、上のマスクを適用する -->
+        <rect width="100%" height="100%" fill="#24201E" mask="url(#textMask)" />
+      </svg>
+    </div>
+    
   </div>
   
   <div class="hero-scroll">
@@ -567,7 +595,7 @@ window.addEventListener('load', () => {
   }, 800); 
 });
 
-/* ---- Hero Mask Image Carousel ---- */
+/* ---- Hero Background Image Carousel ---- */
 const heroImages = [
   'url("top-01.jpg")',
   'url("top-02.jpg")',
@@ -579,49 +607,63 @@ const heroImages = [
   'url("top-08.jpg")'
 ];
 let currentImgIndex = 0;
-const layer1 = document.getElementById('maskLayer1');
-const layer2 = document.getElementById('maskLayer2');
-let activeLayer = 1;
+const slide1 = document.getElementById('bg-slide-1');
+const slide2 = document.getElementById('bg-slide-2');
+let activeSlide = 1;
 
 // 初期化
-layer1.style.backgroundImage = heroImages[0];
-layer2.style.backgroundImage = heroImages[1];
-layer2.style.opacity = 0;
+slide1.style.backgroundImage = heroImages[0];
+slide2.style.backgroundImage = heroImages[1];
+slide2.style.opacity = 0;
 
 setInterval(() => {
   currentImgIndex = (currentImgIndex + 1) % heroImages.length;
   const nextImgUrl = heroImages[currentImgIndex];
   
-  if (activeLayer === 1) {
-    layer2.style.backgroundImage = nextImgUrl;
-    layer2.style.opacity = 1;
-    layer1.style.opacity = 0;
-    activeLayer = 2;
+  if (activeSlide === 1) {
+    slide2.style.backgroundImage = nextImgUrl;
+    slide2.style.opacity = 1;
+    slide1.style.opacity = 0;
+    activeSlide = 2;
   } else {
-    layer1.style.backgroundImage = nextImgUrl;
-    layer1.style.opacity = 1;
-    layer2.style.opacity = 0;
-    activeLayer = 1;
+    slide1.style.backgroundImage = nextImgUrl;
+    slide1.style.opacity = 1;
+    slide2.style.opacity = 0;
+    activeSlide = 1;
   }
 }, 4000);
 
-/* 🌟 ADDED: GSAP Animations for Hero Section */
+/* 🌟 ADDED: Advanced GSAP Animations (NOT A HOTEL Style) */
 function initGSAP() {
   if (typeof gsap !== 'undefined') {
     gsap.registerPlugin(ScrollTrigger);
     
-    // スクロールに合わせて「マスク文字のコンテナ」自体をズームインさせる
-    gsap.to('.hero-mask-zoom-container', {
-      scale: 30, // どんどん大きくなる
-      opacity: 0, // 最終的に消えて次のセクションへ
-      ease: "power2.in",
+    // 一連のアニメーションをタイムラインで繋げる
+    let tl = gsap.timeline({
       scrollTrigger: {
         trigger: ".hero-mask",
         start: "top top",
         end: "bottom top",
-        scrub: true // スクロールにピタッと連動
+        scrub: 1, // スクロールに連動
       }
     });
+
+    // フェーズ1: 文字が GC -> GRAND CENTRAL に切り替わる
+    tl.to("#textGroup1", { opacity: 0, duration: 0.1 })
+      .to("#textGroup2", { opacity: 1, duration: 0.1 }, "<")
+      
+    // フェーズ2: その状態を少しキープ（余韻）
+      .to({}, { duration: 0.5 })
+      
+    // フェーズ3: ズームイン（文字のコンテナだけが拡大し、背景画像はそのまま）
+      .to('.hero-mask-zoom-container', {
+        scale: 40, // 画面を突き破るまで拡大
+        duration: 2,
+        ease: "power3.in"
+      })
+      
+    // フェーズ4: 完全にズームしたらフェードアウトして次のセクションへ
+      .to('.hero-mask-zoom-container', { opacity: 0, duration: 0.2 }, "-=0.2");
   }
 }
 
