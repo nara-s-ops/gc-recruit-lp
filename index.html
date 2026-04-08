@@ -24,7 +24,7 @@
   --white-50: rgba(255,255,255,0.5);
   --font-ja: "Noto Sans JP","Hiragino Kaku Gothic Pro",sans-serif;
   --font-en: "Inter","Arial",sans-serif;
-  --ease: cubic-bezier(.25,.46,.45,.94);
+  --ease: cubic-bezier(.215, .61, .355, 1); /* NEU風のスムーズなイージングに変更 */
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 html{font-size:16px;scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
@@ -62,10 +62,50 @@ ul,ol{list-style:none}
 .hero-slide{position:absolute;inset:0;background-size:cover;background-position:center center;opacity:0;transform:scale(1.1);transition:opacity 1.6s ease-in-out, transform 6s linear}
 .hero-slide.active{opacity:1;transform:scale(1)}
 .hero-overlay{position:absolute;inset:0;background:rgba(0,0,0,.35);z-index:2}
-.hero-join{position:absolute;z-index:3;left:5%;top:50%;transform:translateY(-50%);width:70%;pointer-events:none}
+
+/* ============ ADDED: TEXT MARQUEE (NEU Style) ============ */
+.marquee-wrap {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 150vw; /* 画面幅より大きくして斜めに配置 */
+  transform: translate(-50%, -50%) rotate(-10deg);
+  z-index: 3; /* 背景画像の上、キャッチコピーの下 */
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  opacity: 0.6; /* 透過させて背景と馴染ませる */
+}
+.marquee-line {
+  display: flex;
+  width: 200%;
+  white-space: nowrap;
+}
+.marquee-text {
+  font-family: var(--font-en);
+  font-size: 7vw;
+  font-weight: 900;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.4); /* 白抜きの文字 */
+  text-transform: uppercase;
+  padding-right: 2rem;
+  animation: marquee-scroll 25s linear infinite;
+}
+.marquee-line:nth-child(even) .marquee-text {
+  animation-direction: reverse;
+  color: rgba(255,255,255,0.05); /* 偶数行はうっすらと白く塗りつぶす */
+  -webkit-text-stroke: 0;
+}
+@keyframes marquee-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); } /* 半分移動でループ */
+}
+
+/* 「Join」手書きテキスト */
+.hero-join{position:absolute;z-index:4;left:5%;top:50%;transform:translateY(-50%);width:70%;pointer-events:none}
 .hero-join img{width:100%;height:auto;filter:drop-shadow(0 4px 24px rgba(0,0,0,.3))}
 @media(max-width:768px){.hero-join{width:90%;left:2%}.hero-join img{opacity:.7}}
-.hero-catch{position:absolute;right:120px;top:50%;transform:translateY(-50%);z-index:4;writing-mode:vertical-rl;font-size:42px;font-weight:900;color:var(--white);letter-spacing:.15em;line-height:1.8;text-shadow:0 2px 30px rgba(0,0,0,.4)}
+.hero-catch{position:absolute;right:120px;top:50%;transform:translateY(-50%);z-index:5;writing-mode:vertical-rl;font-size:42px;font-weight:900;color:var(--white);letter-spacing:.15em;line-height:1.8;text-shadow:0 2px 30px rgba(0,0,0,.4)}
 .hero-catch .sub{font-size:36px;color:var(--accent);margin-right:16px}
 .hero-side-right{position:absolute;right:30px;top:50%;transform:translateY(-50%);z-index:5;display:flex;flex-direction:column;align-items:center;gap:24px}
 .hero-side-right a{writing-mode:vertical-rl;font-family:var(--font-en);font-size:10px;color:var(--white-50);letter-spacing:.18em;text-transform:uppercase}
@@ -93,7 +133,7 @@ ul,ol{list-style:none}
 .section-title{font-size:34px;font-weight:900;letter-spacing:.06em;line-height:1.4}
 .section-desc{margin-top:20px;font-size:14px;line-height:2;color:var(--text-sub);max-width:680px}
 
-/* ============ IMAGE REVEAL EFFECT (Allhouse style) ============ */
+/* ============ IMAGE REVEAL EFFECT ============ */
 .reveal-img-wrap { position: relative; overflow: hidden; display: block; }
 .reveal-img-wrap::after {
   content: ''; position: absolute; inset: 0;
@@ -209,11 +249,14 @@ ul,ol{list-style:none}
 .btn-more::after{content:'\2192';font-size:15px;transition:transform .4s var(--ease)}
 .btn-more:hover::after{transform:translateX(5px)}
 
-/* ============ ANIMATIONS ============ */
+/* ============ SCROLL ANIMATIONS (NEU Style) ============ */
 @keyframes pulse { 0% { opacity: 0.5; transform: scale(0.95); } 50% { opacity: 1; transform: scale(1.05); } 100% { opacity: 0.5; transform: scale(0.95); } }
-.fade-in{opacity:0;transform:translateY(36px);transition:opacity .7s ease,transform .7s ease}
+
+/* 移動距離を長めにし、イージングを鋭くしてダイナミックに */
+.fade-in{opacity:0;transform:translateY(60px);transition:opacity 1s var(--ease),transform 1s var(--ease)}
 .fade-in.visible{opacity:1;transform:translateY(0)}
-.stagger>*{opacity:0;transform:translateY(24px);transition:opacity .5s ease,transform .5s ease}
+
+.stagger>*{opacity:0;transform:translateY(40px);transition:opacity 0.8s var(--ease),transform 0.8s var(--ease)}
 .stagger.visible>*{opacity:1;transform:translateY(0)}
 .stagger.visible>*:nth-child(1){transition-delay:0s}
 .stagger.visible>*:nth-child(2){transition-delay:.1s}
@@ -222,12 +265,15 @@ ul,ol{list-style:none}
 .stagger.visible>*:nth-child(5){transition-delay:.25s}
 .stagger.visible>*:nth-child(6){transition-delay:.3s}
 
-/* ============ LOADER SPLIT ANIMATION ============ */
-.loader-wrapper { position: fixed; inset: 0; z-index: 9999; pointer-events: none; display: flex; flex-direction: column; }
-.loader-half { flex: 1; background: var(--dark); transition: transform 1s cubic-bezier(0.77, 0, 0.175, 1); }
-.loader-wrapper.loaded .loader-half.top { transform: translateY(-100%); }
-.loader-wrapper.loaded .loader-half.bottom { transform: translateY(100%); }
-.loader-logo { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); transition: opacity 0.4s ease; animation: pulse 1.5s infinite ease-in-out; }
+/* ============ LOADER WIPE ANIMATION (NEU Style) ============ */
+.loader-wrapper { 
+  position: fixed; inset: 0; z-index: 9999; 
+  background: var(--dark);
+  display: flex; align-items: center; justify-content: center;
+  transition: transform 1.2s cubic-bezier(0.85, 0, 0.15, 1); /* 一気に上に抜けるイージング */
+}
+.loader-wrapper.loaded { transform: translateY(-100%); }
+.loader-logo { transition: opacity 0.4s ease; animation: pulse 1.5s infinite ease-in-out; }
 .loader-wrapper.loaded .loader-logo { opacity: 0; animation: none; }
 
 /* ============ CUSTOM CURSOR ============ */
@@ -289,10 +335,8 @@ ul,ol{list-style:none}
 <div class="cursor" id="cursor"></div>
 <div class="cursor-follower" id="cursor-follower"></div>
 
-<!-- ADDED: SPLIT LOADER (Allhouse style) -->
+<!-- MODIFIED: WIPE UP LOADER (NEU style) -->
 <div class="loader-wrapper" id="loaderWrapper">
-  <div class="loader-half top"></div>
-  <div class="loader-half bottom"></div>
   <img src="gc-logo.png" alt="Grand Central" class="loader-logo">
 </div>
 
@@ -338,6 +382,18 @@ ul,ol{list-style:none}
     <div class="hero-slide" style="background-image:url('top-08.jpg')"></div>
   </div>
   <div class="hero-overlay"></div>
+
+  <!-- ADDED: TEXT MARQUEE (NEU Style) -->
+  <div class="marquee-wrap">
+    <div class="marquee-line">
+      <div class="marquee-text">GRAND CENTRAL SALES CONSULTING GRAND CENTRAL SALES CONSULTING </div>
+      <div class="marquee-text">GRAND CENTRAL SALES CONSULTING GRAND CENTRAL SALES CONSULTING </div>
+    </div>
+    <div class="marquee-line">
+      <div class="marquee-text">HACK TO WIN, DIVE TO NEW WORLD HACK TO WIN, DIVE TO NEW WORLD </div>
+      <div class="marquee-text">HACK TO WIN, DIVE TO NEW WORLD HACK TO WIN, DIVE TO NEW WORLD </div>
+    </div>
+  </div>
 
   <div class="hero-join">
     <img src="join-us.svg" alt="Join Us">
@@ -571,15 +627,15 @@ window.addEventListener('scroll',()=>{header.classList.toggle('scrolled',scrollY
   let timer=setInterval(()=>goTo(current+1),interval);
 })();
 
-/* ---- Split Loader Animations (Allhouse Style) ---- */
+/* ---- Loader Wipe Animation (NEU Style) ---- */
 window.addEventListener('load', () => {
   setTimeout(() => {
     const loaderWrapper = document.getElementById('loaderWrapper');
     loaderWrapper.classList.add('loaded');
     setTimeout(() => {
       loaderWrapper.style.display = 'none';
-    }, 1200); // アニメーション終了後に完全に非表示
-  }, 800); // 少し待ってから幕を開ける
+    }, 1200); // ワイプアウト完了後に非表示
+  }, 800); 
 });
 
 // 見出し（h2）を動的にラップしてスライドイン（Reveal）効果を付ける
