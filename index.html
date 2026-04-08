@@ -1,0 +1,1890 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grand Central 採用サイト｜営業コンサルティング×営業代行</title>
+<meta name="description" content="株式会社Grand Centralの採用サイト。営業コンサルティング×営業代行のハイブリッドモデルで企業の成長を加速させる仲間を募集しています。">
+<meta property="og:title" content="Grand Central 採用サイト">
+<meta property="og:description" content="営業コンサルティング×営業代行のハイブリッドモデルで企業の成長を加速。新しい仲間を募集中。">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ============================================
+   CSS RESET & VARIABLES
+   ============================================ */
+:root {
+  --color-bg: #EBEBE1;
+  --color-bg-light: #F2F2ED;
+  --color-bg-white: #FFFFFF;
+  --color-dark: #24201E;
+  --color-dark-70: rgba(36, 32, 30, 0.7);
+  --color-text: #000000;
+  --color-text-sub: #333333;
+  --color-accent: #F08200;
+  --color-muted: #A6A691;
+  --color-border: rgba(0,0,0,0.1);
+  --color-white: #FFFFFF;
+  --color-white-50: rgba(255,255,255,0.5);
+  --font-ja: "Noto Sans JP", "Hiragino Kaku Gothic Pro", "メイリオ", sans-serif;
+  --font-en: "Inter", "Arial", sans-serif;
+  --section-padding: 120px;
+  --container-width: 1200px;
+  --header-height: 80px;
+  --transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-ja);
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  line-height: 1.8;
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: opacity var(--transition);
+}
+
+a:hover { opacity: 0.7; }
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+ul, ol { list-style: none; }
+
+.container {
+  max-width: var(--container-width);
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+/* ============================================
+   HEADER
+   ============================================ */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  transition: background var(--transition);
+}
+
+.header.scrolled {
+  background: rgba(36, 32, 30, 0.95);
+  backdrop-filter: blur(10px);
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--header-height);
+  padding: 0 40px;
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-logo-text {
+  font-family: var(--font-en);
+  font-weight: 800;
+  font-size: 20px;
+  color: var(--color-white);
+  letter-spacing: 0.05em;
+}
+
+.header-logo-sub {
+  font-size: 11px;
+  color: var(--color-white-50);
+  letter-spacing: 0.1em;
+}
+
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.header-nav a {
+  font-size: 13px;
+  color: var(--color-white);
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  position: relative;
+}
+
+.header-nav a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--color-white);
+  transition: width var(--transition);
+}
+
+.header-nav a:hover::after {
+  width: 100%;
+}
+
+.header-nav a:hover { opacity: 1; }
+
+.header-entry {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 24px;
+  background: var(--color-accent);
+  color: var(--color-white) !important;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  border-radius: 0;
+  transition: background var(--transition);
+}
+
+.header-entry:hover {
+  background: #d97300;
+  opacity: 1 !important;
+}
+
+/* Mobile menu button */
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 30px;
+  height: 20px;
+  position: relative;
+  z-index: 1001;
+}
+
+.menu-toggle span {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: var(--color-white);
+  position: absolute;
+  left: 0;
+  transition: var(--transition);
+}
+
+.menu-toggle span:nth-child(1) { top: 0; }
+.menu-toggle span:nth-child(2) { top: 9px; }
+.menu-toggle span:nth-child(3) { top: 18px; }
+
+/* ============================================
+   FIXED SIDE NAV
+   ============================================ */
+.side-nav {
+  position: fixed;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.side-nav a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  background: var(--color-dark);
+  color: var(--color-white);
+  font-size: 9px;
+  font-weight: 500;
+  text-align: center;
+  line-height: 1.3;
+  letter-spacing: 0.05em;
+  transition: background var(--transition);
+}
+
+.side-nav a:hover {
+  background: var(--color-accent);
+  opacity: 1;
+}
+
+.side-nav a.active {
+  background: var(--color-accent);
+}
+
+/* ============================================
+   HERO / FIRST VIEW
+   ============================================ */
+.hero {
+  position: relative;
+  height: 100vh;
+  min-height: 700px;
+  overflow: hidden;
+  background: var(--color-dark);
+}
+
+.hero-slider {
+  position: absolute;
+  inset: 0;
+}
+
+.hero-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 1.5s ease;
+}
+
+.hero-slide.active {
+  opacity: 1;
+}
+
+.hero-slide-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 4px;
+  height: 100%;
+  padding: 4px;
+}
+
+.hero-img-placeholder {
+  background: var(--color-dark-70);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: var(--color-white-50);
+  font-family: var(--font-en);
+  letter-spacing: 0.1em;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-img-placeholder::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(240,130,0,0.1), rgba(36,32,30,0.3));
+}
+
+.hero-slide-inner .hero-img-placeholder:nth-child(1) {
+  grid-row: span 2;
+  background: linear-gradient(135deg, #2F2825 0%, #3a3230 100%);
+}
+
+.hero-slide-inner .hero-img-placeholder:nth-child(2) {
+  background: linear-gradient(135deg, #35302d 0%, #2a2523 100%);
+}
+
+.hero-slide-inner .hero-img-placeholder:nth-child(3) {
+  background: linear-gradient(135deg, #302b28 0%, #252120 100%);
+}
+
+.hero-slide-inner .hero-img-placeholder:nth-child(4) {
+  background: linear-gradient(135deg, #3a3533 0%, #2d2826 100%);
+}
+
+.hero-slide-inner .hero-img-placeholder:nth-child(5) {
+  background: linear-gradient(135deg, #332e2c 0%, #282422 100%);
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.3);
+  z-index: 2;
+}
+
+.hero-content {
+  position: absolute;
+  bottom: 120px;
+  left: 60px;
+  z-index: 3;
+}
+
+.hero-catch {
+  font-family: var(--font-ja);
+  font-weight: 900;
+  font-size: 56px;
+  color: var(--color-white);
+  line-height: 1.3;
+  letter-spacing: 0.05em;
+  text-shadow: 0 2px 20px rgba(0,0,0,0.3);
+}
+
+.hero-catch span {
+  display: block;
+}
+
+.hero-sub {
+  margin-top: 20px;
+  font-size: 16px;
+  color: var(--color-white-50);
+  font-weight: 400;
+  letter-spacing: 0.15em;
+}
+
+.hero-scroll {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.hero-scroll span {
+  font-family: var(--font-en);
+  font-size: 10px;
+  color: var(--color-white-50);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.hero-scroll-line {
+  width: 1px;
+  height: 60px;
+  background: var(--color-white-50);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-scroll-line::after {
+  content: '';
+  position: absolute;
+  top: -100%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--color-white);
+  animation: scrollLine 2s ease-in-out infinite;
+}
+
+@keyframes scrollLine {
+  0% { top: -100%; }
+  50% { top: 0; }
+  100% { top: 100%; }
+}
+
+/* Hero indicators */
+.hero-indicators {
+  position: absolute;
+  bottom: 120px;
+  right: 60px;
+  z-index: 3;
+  display: flex;
+  gap: 8px;
+}
+
+.hero-indicator {
+  width: 40px;
+  height: 3px;
+  background: var(--color-white-50);
+  cursor: pointer;
+  transition: background var(--transition);
+}
+
+.hero-indicator.active {
+  background: var(--color-white);
+}
+
+/* Corporate & SNS links */
+.hero-side-links {
+  position: absolute;
+  bottom: 40px;
+  left: 60px;
+  z-index: 3;
+  display: flex;
+  gap: 20px;
+}
+
+.hero-side-links a {
+  font-family: var(--font-en);
+  font-size: 11px;
+  color: var(--color-white-50);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ============================================
+   MESSAGE SECTION
+   ============================================ */
+.message {
+  padding: var(--section-padding) 0;
+  background: var(--color-dark);
+  color: var(--color-white);
+  position: relative;
+  overflow: hidden;
+}
+
+.message-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+.message-text {
+  font-size: 17px;
+  line-height: 2.4;
+  font-weight: 300;
+  letter-spacing: 0.05em;
+}
+
+.message-text .highlight {
+  color: var(--color-accent);
+  font-weight: 700;
+}
+
+.message-text .emphasis {
+  font-size: 28px;
+  font-weight: 900;
+  display: block;
+  margin: 30px 0;
+  line-height: 1.6;
+}
+
+.message-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 60px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-white);
+  letter-spacing: 0.1em;
+  border-bottom: 1px solid var(--color-white-50);
+  padding-bottom: 8px;
+}
+
+.message-link::after {
+  content: '\2192';
+  font-size: 18px;
+  transition: transform var(--transition);
+}
+
+.message-link:hover::after {
+  transform: translateX(4px);
+}
+
+.message-link:hover { opacity: 1; }
+
+/* ============================================
+   SECTION COMMON
+   ============================================ */
+.section {
+  padding: var(--section-padding) 0;
+}
+
+.section-header {
+  margin-bottom: 60px;
+}
+
+.section-title-en {
+  font-family: var(--font-en);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin-bottom: 12px;
+}
+
+.section-title {
+  font-size: 36px;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  line-height: 1.4;
+}
+
+.section-desc {
+  margin-top: 24px;
+  font-size: 15px;
+  line-height: 2;
+  color: var(--color-text-sub);
+  max-width: 700px;
+}
+
+/* ============================================
+   COMPANY SECTION
+   ============================================ */
+.company {
+  background: var(--color-bg);
+}
+
+.company-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-top: 48px;
+}
+
+.company-card {
+  background: var(--color-white);
+  padding: 48px;
+  position: relative;
+  overflow: hidden;
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.company-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+}
+
+.company-card-img {
+  width: 100%;
+  height: 200px;
+  background: var(--color-bg-light);
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: var(--color-muted);
+}
+
+.company-card-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  letter-spacing: 0.05em;
+}
+
+.company-card-desc {
+  font-size: 14px;
+  line-height: 1.9;
+  color: var(--color-text-sub);
+}
+
+.company-card-arrow {
+  position: absolute;
+  bottom: 24px;
+  right: 24px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: var(--color-accent);
+}
+
+/* ============================================
+   JOBS SECTION
+   ============================================ */
+.jobs {
+  background: var(--color-bg-light);
+}
+
+.jobs-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 48px;
+}
+
+.job-card {
+  background: var(--color-white);
+  overflow: hidden;
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.job-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+}
+
+.job-card-img {
+  width: 100%;
+  height: 200px;
+  background: linear-gradient(135deg, var(--color-dark) 0%, #3a3230 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-white-50);
+  font-size: 12px;
+  font-family: var(--font-en);
+}
+
+.job-card-body {
+  padding: 28px;
+}
+
+.job-card-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  letter-spacing: 0.03em;
+}
+
+.job-card-desc {
+  font-size: 13px;
+  line-height: 1.9;
+  color: var(--color-text-sub);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.job-card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-accent);
+  letter-spacing: 0.05em;
+}
+
+.job-card-link::after {
+  content: '\2192';
+  transition: transform var(--transition);
+}
+
+.job-card-link:hover::after {
+  transform: translateX(4px);
+}
+
+.jobs-more {
+  text-align: center;
+  margin-top: 60px;
+}
+
+/* ============================================
+   MEMBERS SECTION
+   ============================================ */
+.members {
+  background: var(--color-bg);
+}
+
+.members-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 48px;
+}
+
+.members-filter {
+  padding: 8px 20px;
+  font-size: 13px;
+  font-weight: 500;
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  cursor: pointer;
+  transition: all var(--transition);
+  letter-spacing: 0.05em;
+}
+
+.members-filter:hover,
+.members-filter.active {
+  background: var(--color-dark);
+  color: var(--color-white);
+  border-color: var(--color-dark);
+}
+
+.members-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.member-card {
+  position: relative;
+  overflow: hidden;
+  background: var(--color-white);
+  transition: transform var(--transition);
+}
+
+.member-card:hover {
+  transform: translateY(-4px);
+}
+
+.member-card-img {
+  width: 100%;
+  aspect-ratio: 1;
+  background: linear-gradient(135deg, #e8e8de 0%, #d5d5c8 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: var(--color-muted);
+}
+
+.member-card-body {
+  padding: 24px;
+}
+
+.member-card-tag {
+  display: inline-block;
+  padding: 4px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  background: var(--color-bg);
+  color: var(--color-text-sub);
+  margin-bottom: 12px;
+  letter-spacing: 0.05em;
+}
+
+.member-card-quote {
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.7;
+  margin-bottom: 8px;
+}
+
+.member-card-info {
+  font-size: 12px;
+  color: var(--color-muted);
+  letter-spacing: 0.05em;
+}
+
+.members-more {
+  text-align: center;
+  margin-top: 60px;
+}
+
+/* ============================================
+   GUIDELINES SECTION (募集要項)
+   ============================================ */
+.guidelines {
+  background: var(--color-dark);
+  padding: var(--section-padding) 0;
+}
+
+.guidelines-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.guideline-card {
+  position: relative;
+  padding: 60px 40px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  text-align: center;
+  transition: all var(--transition);
+  overflow: hidden;
+}
+
+.guideline-card:hover {
+  background: rgba(255,255,255,0.1);
+  transform: translateY(-4px);
+}
+
+.guideline-card-en {
+  font-family: var(--font-en);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-accent);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.guideline-card-title {
+  font-size: 24px;
+  font-weight: 900;
+  color: var(--color-white);
+  margin-bottom: 20px;
+  letter-spacing: 0.1em;
+}
+
+.guideline-card-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--color-white-50);
+  letter-spacing: 0.1em;
+}
+
+.guideline-card-cta::after {
+  content: '\2192';
+}
+
+/* ============================================
+   PICKUP SECTION
+   ============================================ */
+.pickup {
+  background: var(--color-bg-light);
+  padding: var(--section-padding) 0;
+}
+
+.pickup-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-top: 48px;
+}
+
+.pickup-item {
+  display: grid;
+  grid-template-columns: 1fr 2fr auto;
+  gap: 32px;
+  align-items: center;
+  background: var(--color-white);
+  padding: 32px 40px;
+  transition: all var(--transition);
+}
+
+.pickup-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.06);
+}
+
+.pickup-item-tag {
+  display: inline-block;
+  padding: 6px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  background: var(--color-bg);
+  letter-spacing: 0.05em;
+}
+
+.pickup-item-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pickup-item-title {
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.pickup-item-desc {
+  font-size: 13px;
+  line-height: 1.8;
+  color: var(--color-text-sub);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.pickup-item-arrow {
+  font-size: 12px;
+  color: var(--color-accent);
+  font-weight: 600;
+  white-space: nowrap;
+  letter-spacing: 0.1em;
+}
+
+.pickup-item-arrow::after {
+  content: ' \2192';
+}
+
+.pickup-more {
+  text-align: center;
+  margin-top: 48px;
+}
+
+/* ============================================
+   PRE-ENTRY SECTION
+   ============================================ */
+.pre-entry {
+  background: var(--color-bg);
+  padding: var(--section-padding) 0;
+}
+
+.pre-entry-title {
+  font-size: 20px;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 12px;
+  letter-spacing: 0.05em;
+}
+
+.pre-entry-desc {
+  font-size: 14px;
+  text-align: center;
+  color: var(--color-text-sub);
+  line-height: 2;
+  margin-bottom: 48px;
+}
+
+.pre-entry-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.pre-entry-card {
+  background: var(--color-white);
+  padding: 40px;
+  text-align: center;
+  transition: all var(--transition);
+}
+
+.pre-entry-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+}
+
+.pre-entry-card-title {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.pre-entry-card-arrow {
+  margin-top: 16px;
+  color: var(--color-accent);
+  font-size: 20px;
+}
+
+/* ============================================
+   ENTRY CTA SECTION
+   ============================================ */
+.entry-cta {
+  background: var(--color-dark);
+  padding: 100px 0;
+  text-align: center;
+}
+
+.entry-cta-title {
+  font-size: 28px;
+  font-weight: 900;
+  color: var(--color-white);
+  letter-spacing: 0.1em;
+  margin-bottom: 16px;
+}
+
+.entry-cta-desc {
+  font-size: 15px;
+  color: var(--color-white-50);
+  margin-bottom: 48px;
+  line-height: 2;
+}
+
+.entry-cta-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.entry-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 220px;
+  padding: 18px 40px;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  transition: all var(--transition);
+}
+
+.entry-cta-btn--primary {
+  background: var(--color-accent);
+  color: var(--color-white);
+}
+
+.entry-cta-btn--primary:hover {
+  background: #d97300;
+  opacity: 1;
+}
+
+.entry-cta-btn--secondary {
+  background: transparent;
+  color: var(--color-white);
+  border: 1px solid var(--color-white-50);
+}
+
+.entry-cta-btn--secondary:hover {
+  background: rgba(255,255,255,0.1);
+  opacity: 1;
+}
+
+.entry-cta-btn--outline {
+  background: transparent;
+  color: var(--color-white);
+  border: 1px solid rgba(255,255,255,0.3);
+}
+
+.entry-cta-btn--outline:hover {
+  background: rgba(255,255,255,0.1);
+  opacity: 1;
+}
+
+/* ============================================
+   FOOTER
+   ============================================ */
+.footer {
+  background: var(--color-dark);
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding: 80px 0 40px;
+}
+
+.footer-inner {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  gap: 60px;
+}
+
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.footer-logo {
+  font-family: var(--font-en);
+  font-weight: 800;
+  font-size: 18px;
+  color: var(--color-white);
+  letter-spacing: 0.05em;
+}
+
+.footer-logo-sub {
+  font-size: 11px;
+  color: var(--color-white-50);
+}
+
+.footer-sns {
+  display: flex;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.footer-sns a {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255,255,255,0.2);
+  color: var(--color-white-50);
+  font-size: 12px;
+  font-family: var(--font-en);
+  transition: all var(--transition);
+}
+
+.footer-sns a:hover {
+  border-color: var(--color-white);
+  color: var(--color-white);
+  opacity: 1;
+}
+
+.footer-nav {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 40px;
+}
+
+.footer-nav-group h4 {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-white);
+  margin-bottom: 16px;
+  letter-spacing: 0.05em;
+}
+
+.footer-nav-group ul li {
+  margin-bottom: 8px;
+}
+
+.footer-nav-group a {
+  font-size: 12px;
+  color: var(--color-white-50);
+  letter-spacing: 0.03em;
+}
+
+.footer-bottom {
+  margin-top: 60px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-copyright {
+  font-family: var(--font-en);
+  font-size: 11px;
+  color: var(--color-white-50);
+  letter-spacing: 0.1em;
+}
+
+.footer-links {
+  display: flex;
+  gap: 24px;
+}
+
+.footer-links a {
+  font-size: 11px;
+  color: var(--color-white-50);
+  font-family: var(--font-en);
+  letter-spacing: 0.1em;
+}
+
+/* ============================================
+   BUTTONS
+   ============================================ */
+.btn-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 36px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  border: 1px solid var(--color-dark);
+  color: var(--color-dark);
+  transition: all var(--transition);
+}
+
+.btn-more:hover {
+  background: var(--color-dark);
+  color: var(--color-white);
+  opacity: 1;
+}
+
+.btn-more::after {
+  content: '\2192';
+  font-size: 16px;
+  transition: transform var(--transition);
+}
+
+.btn-more:hover::after {
+  transform: translateX(4px);
+}
+
+.btn-more--white {
+  border-color: var(--color-white);
+  color: var(--color-white);
+}
+
+.btn-more--white:hover {
+  background: var(--color-white);
+  color: var(--color-dark);
+}
+
+/* ============================================
+   SCROLL ANIMATIONS
+   ============================================ */
+.fade-in {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.fade-in-left {
+  opacity: 0;
+  transform: translateX(-40px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.fade-in-left.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.fade-in-right {
+  opacity: 0;
+  transform: translateX(40px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.fade-in-right.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Stagger children */
+.stagger-children > * {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.stagger-children.visible > *:nth-child(1) { transition-delay: 0s; }
+.stagger-children.visible > *:nth-child(2) { transition-delay: 0.1s; }
+.stagger-children.visible > *:nth-child(3) { transition-delay: 0.2s; }
+.stagger-children.visible > *:nth-child(4) { transition-delay: 0.3s; }
+.stagger-children.visible > *:nth-child(5) { transition-delay: 0.4s; }
+.stagger-children.visible > *:nth-child(6) { transition-delay: 0.5s; }
+
+.stagger-children.visible > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 1024px) {
+  :root {
+    --section-padding: 80px;
+  }
+
+  .hero-catch { font-size: 42px; }
+
+  .company-cards,
+  .guidelines-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .jobs-grid,
+  .members-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .footer-inner {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-nav {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .side-nav { display: none; }
+
+  .pickup-item {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --section-padding: 60px;
+    --header-height: 60px;
+  }
+
+  .container { padding: 0 20px; }
+
+  .header-nav { display: none; }
+  .header-entry { display: none; }
+  .menu-toggle { display: block; }
+
+  .header-inner { padding: 0 20px; }
+
+  .hero { min-height: 600px; }
+  .hero-catch { font-size: 32px; }
+  .hero-content { bottom: 100px; left: 20px; right: 20px; }
+  .hero-indicators { display: none; }
+  .hero-side-links { display: none; }
+
+  .section-title { font-size: 28px; }
+
+  .message-text { font-size: 15px; }
+  .message-text .emphasis { font-size: 22px; }
+
+  .jobs-grid { grid-template-columns: 1fr; }
+  .members-grid { grid-template-columns: 1fr; }
+  .guidelines-grid { grid-template-columns: 1fr; }
+
+  .pre-entry-cards { grid-template-columns: 1fr; }
+
+  .entry-cta-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .entry-cta-btn { width: 100%; max-width: 300px; }
+
+  .footer-nav {
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    gap: 16px;
+    text-align: center;
+  }
+
+  .members-filters { gap: 6px; }
+  .members-filter { padding: 6px 14px; font-size: 12px; }
+}
+
+/* Mobile nav overlay */
+.mobile-nav {
+  position: fixed;
+  inset: 0;
+  background: var(--color-dark);
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition);
+}
+
+.mobile-nav.open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.mobile-nav a {
+  font-size: 18px;
+  color: var(--color-white);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+}
+</style>
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header" id="header">
+  <div class="header-inner">
+    <a href="#" class="header-logo">
+      <div>
+        <div class="header-logo-text">Grand Central</div>
+        <div class="header-logo-sub">RECRUITING</div>
+      </div>
+    </a>
+    <nav class="header-nav">
+      <a href="#company">会社・仕事を知る</a>
+      <a href="#members">仲間を知る</a>
+      <a href="#guidelines">募集要項</a>
+      <a href="#system">人事制度</a>
+      <a href="#selection">選考について</a>
+      <a href="#entry" class="header-entry">エントリーはこちら</a>
+    </nav>
+    <button class="menu-toggle" id="menuToggle" aria-label="メニュー">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- Mobile Nav -->
+<div class="mobile-nav" id="mobileNav">
+  <a href="#" onclick="closeMobileNav()">トップ</a>
+  <a href="#company" onclick="closeMobileNav()">会社・仕事を知る</a>
+  <a href="#members" onclick="closeMobileNav()">仲間を知る</a>
+  <a href="#guidelines" onclick="closeMobileNav()">募集要項</a>
+  <a href="#entry" onclick="closeMobileNav()">エントリー</a>
+</div>
+
+<!-- ========== SIDE NAV ========== -->
+<nav class="side-nav" id="sideNav">
+  <a href="#hero" class="active">採用<br>トップ</a>
+  <a href="#company">会社と<br>仕事</a>
+  <a href="#members">仲間を<br>知る</a>
+  <a href="#guidelines">募集<br>要項</a>
+  <a href="#entry">エン<br>トリー</a>
+</nav>
+
+<!-- ========== HERO ========== -->
+<section class="hero" id="hero">
+  <div class="hero-slider" id="heroSlider">
+    <!-- Slide 1 -->
+    <div class="hero-slide active">
+      <div class="hero-slide-inner">
+        <div class="hero-img-placeholder">PHOTO 01</div>
+        <div class="hero-img-placeholder">PHOTO 02</div>
+        <div class="hero-img-placeholder">PHOTO 03</div>
+        <div class="hero-img-placeholder">PHOTO 04</div>
+        <div class="hero-img-placeholder">PHOTO 05</div>
+      </div>
+    </div>
+    <!-- Slide 2 -->
+    <div class="hero-slide">
+      <div class="hero-slide-inner">
+        <div class="hero-img-placeholder">PHOTO 06</div>
+        <div class="hero-img-placeholder">PHOTO 07</div>
+        <div class="hero-img-placeholder">PHOTO 08</div>
+        <div class="hero-img-placeholder">PHOTO 09</div>
+        <div class="hero-img-placeholder">PHOTO 10</div>
+      </div>
+    </div>
+    <!-- Slide 3 -->
+    <div class="hero-slide">
+      <div class="hero-slide-inner">
+        <div class="hero-img-placeholder">PHOTO 11</div>
+        <div class="hero-img-placeholder">PHOTO 12</div>
+        <div class="hero-img-placeholder">PHOTO 13</div>
+        <div class="hero-img-placeholder">PHOTO 14</div>
+        <div class="hero-img-placeholder">PHOTO 15</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-overlay"></div>
+
+  <div class="hero-content">
+    <h1 class="hero-catch">
+      <span>営業の力で、</span>
+      <span>企業の未来を創る。</span>
+    </h1>
+    <p class="hero-sub">Sales Consulting &times; Sales Outsourcing</p>
+  </div>
+
+  <div class="hero-indicators" id="heroIndicators">
+    <div class="hero-indicator active" data-slide="0"></div>
+    <div class="hero-indicator" data-slide="1"></div>
+    <div class="hero-indicator" data-slide="2"></div>
+  </div>
+
+  <div class="hero-side-links">
+    <a href="#">CORPORATE SITE</a>
+    <a href="#">X (TWITTER)</a>
+  </div>
+
+  <div class="hero-scroll">
+    <span>Scroll</span>
+    <div class="hero-scroll-line"></div>
+  </div>
+</section>
+
+<!-- ========== MESSAGE ========== -->
+<section class="message" id="message">
+  <div class="message-inner fade-in">
+    <p class="message-text">
+      「日本の営業を変えたい」。その想いから、Grand Centralは誕生しました。<br><br>
+      営業コンサルティングと営業代行を掛け合わせた<span class="highlight">ハイブリッドモデル</span>で、クライアント企業の営業組織を根本から変革する。戦略だけでなく、実行まで一気通貫で伴走するからこそ、確実に成果を出せる。
+      <span class="emphasis">設立からわずか数年で、<br>業界屈指の成長率を誇るまでに。</span>
+      しかし、私たちの挑戦はまだ始まったばかりです。<br><br>
+      営業という領域で<span class="highlight">これまでにない価値を創造し続ける</span>ために、共に走り、共に成長できる仲間を求めています。あなたの「主体性」と「成長意欲」が、Grand Centralの未来をつくります。
+    </p>
+    <a href="#" class="message-link">もっと見る</a>
+  </div>
+</section>
+
+<!-- ========== COMPANY ========== -->
+<section class="section company" id="company">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="section-title-en">About Us</div>
+      <h2 class="section-title">会社と仕事を知る。</h2>
+      <p class="section-desc">営業コンサルティング×営業代行のハイブリッドモデルで、クライアント企業の売上拡大を支援するGrand Central。ここでは、当社の理念や企業文化、福利厚生をご紹介いたします。</p>
+    </div>
+    <div class="company-cards stagger-children">
+      <a href="#" class="company-card">
+        <div class="company-card-img">IMAGE: 数字で見るGC</div>
+        <div class="company-card-title">数字で見るGrand Central・成長の軌跡</div>
+        <div class="company-card-desc">Grand Centralの事業規模やクライアント数、成長率などを数値でまとめました。これまでの歩みと実績をご覧いただけます。</div>
+        <div class="company-card-arrow">&rarr;</div>
+      </a>
+      <a href="#" class="company-card">
+        <div class="company-card-img">IMAGE: 文化と風土</div>
+        <div class="company-card-title">文化と風土・福利厚生</div>
+        <div class="company-card-desc">Grand Centralが大切にしている企業理念と行動指針。それらを構成する社内イベントや福利厚生の詳細をご覧いただけます。</div>
+        <div class="company-card-arrow">&rarr;</div>
+      </a>
+    </div>
+
+    <!-- Jobs sub-section -->
+    <div class="section-header fade-in" style="margin-top: 100px;">
+      <h2 class="section-title">職種の内容と役割を知る。</h2>
+      <p class="section-desc">Grand Centralには、営業戦略から実行まで、多様な職種と働き方が存在します。一人ひとりが担う職種とその役割をご紹介いたします。</p>
+    </div>
+    <div class="jobs-grid stagger-children">
+      <a href="#" class="job-card">
+        <div class="job-card-img">PHOTO: セールス</div>
+        <div class="job-card-body">
+          <div class="job-card-title">セールスコンサルタント職</div>
+          <div class="job-card-desc">クライアント企業の営業課題を分析し、戦略立案から実行支援まで一気通貫で担う。BtoB営業のプロフェッショナルとして、クライアントの売上拡大を実現する。</div>
+          <div class="job-card-link">詳しく見る</div>
+        </div>
+      </a>
+      <a href="#" class="job-card">
+        <div class="job-card-img">PHOTO: IS</div>
+        <div class="job-card-body">
+          <div class="job-card-title">インサイドセールス職</div>
+          <div class="job-card-desc">電話・メール・オンラインを駆使し、ターゲット企業との接点を創出。質の高い商談機会を創り出し、クライアントの営業パイプラインを拡大する。</div>
+          <div class="job-card-link">詳しく見る</div>
+        </div>
+      </a>
+      <a href="#" class="job-card">
+        <div class="job-card-img">PHOTO: マーケ</div>
+        <div class="job-card-body">
+          <div class="job-card-title">マーケティング職</div>
+          <div class="job-card-desc">SEO、広告運用、SNS、コンテンツマーケティングを駆使し、自社及びクライアントのリード獲得・認知拡大を推進する。</div>
+          <div class="job-card-link">詳しく見る</div>
+        </div>
+      </a>
+      <a href="#" class="job-card">
+        <div class="job-card-img">PHOTO: 事業開発</div>
+        <div class="job-card-body">
+          <div class="job-card-title">事業開発職</div>
+          <div class="job-card-desc">新規サービスの企画立案や、既存事業の拡大戦略を推進。営業領域における新たなビジネスモデルの構築を担う。</div>
+          <div class="job-card-link">詳しく見る</div>
+        </div>
+      </a>
+      <a href="#" class="job-card">
+        <div class="job-card-img">PHOTO: コーポレート</div>
+        <div class="job-card-body">
+          <div class="job-card-title">コーポレート職</div>
+          <div class="job-card-desc">経理、人事、労務、総務、法務、広報など、急成長する組織を支えるバックオフィス全般を担う。</div>
+          <div class="job-card-link">詳しく見る</div>
+        </div>
+      </a>
+      <a href="#" class="job-card">
+        <div class="job-card-img">PHOTO: エンジニア</div>
+        <div class="job-card-body">
+          <div class="job-card-title">エンジニア職</div>
+          <div class="job-card-desc">営業DXを推進するプロダクトの開発・運用。テクノロジーの力で営業プロセスの効率化と高度化を実現する。</div>
+          <div class="job-card-link">詳しく見る</div>
+        </div>
+      </a>
+    </div>
+    <div class="jobs-more fade-in" style="margin-top: 60px;">
+      <a href="#" class="btn-more">仕事を知る</a>
+    </div>
+  </div>
+</section>
+
+<!-- ========== MEMBERS ========== -->
+<section class="section members" id="members">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="section-title-en">People</div>
+      <h2 class="section-title">働く仲間を知る。</h2>
+      <p class="section-desc">当社の成長を支える「主体者」である社員のインタビューをご紹介しています。</p>
+    </div>
+    <div class="members-filters fade-in">
+      <span class="members-filter active">すべて</span>
+      <span class="members-filter">新卒入社</span>
+      <span class="members-filter">中途入社</span>
+      <span class="members-filter">セールスコンサルタント</span>
+      <span class="members-filter">インサイドセールス</span>
+      <span class="members-filter">マーケティング</span>
+      <span class="members-filter">事業開発</span>
+      <span class="members-filter">コーポレート</span>
+    </div>
+    <div class="members-grid stagger-children">
+      <a href="#" class="member-card">
+        <div class="member-card-img">PHOTO</div>
+        <div class="member-card-body">
+          <span class="member-card-tag">セールスコンサルタント職</span>
+          <div class="member-card-quote">クライアントの事業成長に直接貢献できる、この仕事の醍醐味</div>
+          <div class="member-card-info">2021年 中途入社</div>
+        </div>
+      </a>
+      <a href="#" class="member-card">
+        <div class="member-card-img">PHOTO</div>
+        <div class="member-card-body">
+          <span class="member-card-tag">インサイドセールス職</span>
+          <div class="member-card-quote">新卒入社から最速でチームリーダーへ。成長を止めない環境がここにある</div>
+          <div class="member-card-info">2023年 新卒入社</div>
+        </div>
+      </a>
+      <a href="#" class="member-card">
+        <div class="member-card-img">PHOTO</div>
+        <div class="member-card-body">
+          <span class="member-card-tag">マーケティング職</span>
+          <div class="member-card-quote">マーケティングの力で営業組織を変える。データドリブンな挑戦</div>
+          <div class="member-card-info">2022年 中途入社</div>
+        </div>
+      </a>
+      <a href="#" class="member-card">
+        <div class="member-card-img">PHOTO</div>
+        <div class="member-card-body">
+          <span class="member-card-tag">事業開発職</span>
+          <div class="member-card-quote">営業領域の新規事業を次々と立ち上げ、会社の成長エンジンを担う</div>
+          <div class="member-card-info">2020年 中途入社</div>
+        </div>
+      </a>
+      <a href="#" class="member-card">
+        <div class="member-card-img">PHOTO</div>
+        <div class="member-card-body">
+          <span class="member-card-tag">セールスコンサルタント職</span>
+          <div class="member-card-quote">異業種から転職。営業のプロとして第二のキャリアを歩む</div>
+          <div class="member-card-info">2022年 中途入社</div>
+        </div>
+      </a>
+      <a href="#" class="member-card">
+        <div class="member-card-img">PHOTO</div>
+        <div class="member-card-body">
+          <span class="member-card-tag">コーポレート職</span>
+          <div class="member-card-quote">急成長企業のバックオフィスを一から構築する面白さ</div>
+          <div class="member-card-info">2021年 新卒入社</div>
+        </div>
+      </a>
+    </div>
+    <div class="members-more fade-in">
+      <a href="#" class="btn-more">働く仲間をもっと知る</a>
+    </div>
+  </div>
+</section>
+
+<!-- ========== GUIDELINES ========== -->
+<section class="guidelines" id="guidelines">
+  <div class="container">
+    <div class="guidelines-grid stagger-children">
+      <a href="#" class="guideline-card">
+        <div class="guideline-card-en">New Graduate</div>
+        <h3 class="guideline-card-title">新卒</h3>
+        <div class="guideline-card-cta">募集要項</div>
+      </a>
+      <a href="#" class="guideline-card">
+        <div class="guideline-card-en">Career</div>
+        <h3 class="guideline-card-title">キャリア</h3>
+        <div class="guideline-card-cta">募集要項</div>
+      </a>
+      <a href="#" class="guideline-card">
+        <div class="guideline-card-en">Part time</div>
+        <h3 class="guideline-card-title">パート・アルバイト</h3>
+        <div class="guideline-card-cta">募集要項</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ========== PICKUP ========== -->
+<section class="section pickup" id="pickup">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="section-title-en">Featured Positions</div>
+      <h2 class="section-title">ピックアップ採用職種</h2>
+    </div>
+    <div class="pickup-list stagger-children">
+      <a href="#" class="pickup-item">
+        <span class="pickup-item-tag">セールスコンサルタント職</span>
+        <div class="pickup-item-content">
+          <div class="pickup-item-title">BtoBセールスコンサルタント</div>
+          <div class="pickup-item-desc">クライアント企業の営業戦略立案から実行支援まで、一気通貫で営業課題の解決を担います。業界・規模を問わず多様な企業の営業変革に携われます。</div>
+        </div>
+        <span class="pickup-item-arrow">もっと見る</span>
+      </a>
+      <a href="#" class="pickup-item">
+        <span class="pickup-item-tag">インサイドセールス職</span>
+        <div class="pickup-item-content">
+          <div class="pickup-item-title">インサイドセールス</div>
+          <div class="pickup-item-desc">クライアント企業のターゲットリストに対してアプローチを行い、質の高い商談機会を創出。営業プロセスの最前線を担います。</div>
+        </div>
+        <span class="pickup-item-arrow">もっと見る</span>
+      </a>
+      <a href="#" class="pickup-item">
+        <span class="pickup-item-tag">マーケティング職</span>
+        <div class="pickup-item-content">
+          <div class="pickup-item-title">デジタルマーケティング担当</div>
+          <div class="pickup-item-desc">Google広告・Meta広告の運用、SEO対策、コンテンツマーケティングを通じて、自社のリード獲得と認知拡大を推進します。</div>
+        </div>
+        <span class="pickup-item-arrow">もっと見る</span>
+      </a>
+    </div>
+    <div class="pickup-more fade-in">
+      <a href="#" class="btn-more">詳しくはこちら</a>
+    </div>
+  </div>
+</section>
+
+<!-- ========== PRE-ENTRY ========== -->
+<section class="pre-entry" id="selection">
+  <div class="container">
+    <div class="fade-in">
+      <div class="pre-entry-title">応募前に是非お役立てください</div>
+      <div class="pre-entry-desc">当社は採用活動において、候補者のみなさまとの「Win-Win」の関係を目指しています。<br>ミスマッチにならないようにエントリーや面接前にご活用ください。</div>
+    </div>
+    <div class="pre-entry-cards stagger-children">
+      <a href="#" class="pre-entry-card">
+        <div class="pre-entry-card-title">求める人物像と選考フロー</div>
+        <div class="pre-entry-card-arrow">&rarr;</div>
+      </a>
+      <a href="#" class="pre-entry-card">
+        <div class="pre-entry-card-title">当社へのご入社をご検討されている方へ</div>
+        <div class="pre-entry-card-arrow">&rarr;</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ========== ENTRY CTA ========== -->
+<section class="entry-cta" id="entry">
+  <div class="container">
+    <div class="fade-in">
+      <div class="entry-cta-title">採用応募エントリーはこちらから</div>
+      <div class="entry-cta-desc">成長拡大を続ける私たちGrand Centralは多種多様な職種で新しい仲間を求めています。</div>
+      <div class="entry-cta-buttons">
+        <a href="#" class="entry-cta-btn entry-cta-btn--primary">新卒採用</a>
+        <a href="#" class="entry-cta-btn entry-cta-btn--secondary">キャリア採用</a>
+        <a href="#" class="entry-cta-btn entry-cta-btn--outline">パートアルバイト</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== FOOTER ========== -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="footer-logo">Grand Central</div>
+        <div class="footer-logo-sub">採用サイト</div>
+        <div class="footer-sns">
+          <a href="#">X</a>
+          <a href="#">FB</a>
+        </div>
+      </div>
+      <nav class="footer-nav">
+        <div class="footer-nav-group">
+          <h4>採用トップ</h4>
+        </div>
+        <div class="footer-nav-group">
+          <h4>会社・仕事を知る</h4>
+          <ul>
+            <li><a href="#">採用メッセージ</a></li>
+            <li><a href="#">数字で見るGC</a></li>
+            <li><a href="#">文化と風土・福利厚生</a></li>
+            <li><a href="#">職種の内容と役割</a></li>
+          </ul>
+        </div>
+        <div class="footer-nav-group">
+          <h4>募集要項</h4>
+          <ul>
+            <li><a href="#">新卒</a></li>
+            <li><a href="#">キャリア</a></li>
+            <li><a href="#">パート・アルバイト</a></li>
+          </ul>
+        </div>
+        <div class="footer-nav-group">
+          <h4>その他</h4>
+          <ul>
+            <li><a href="#">仲間を知る</a></li>
+            <li><a href="#">人事制度</a></li>
+            <li><a href="#">選考について</a></li>
+            <li><a href="#">採用エントリー</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copyright">&copy; Grand Central Inc.</div>
+      <div class="footer-links">
+        <a href="#">CORPORATE SITE</a>
+        <a href="#">PRIVACY POLICY</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ========== JAVASCRIPT ========== -->
+<script>
+// Header scroll effect
+const header = document.getElementById('header');
+window.addEventListener('scroll', () => {
+  header.classList.toggle('scrolled', window.scrollY > 50);
+});
+
+// Hero slider
+const slides = document.querySelectorAll('.hero-slide');
+const indicators = document.querySelectorAll('.hero-indicator');
+let currentSlide = 0;
+
+function goToSlide(index) {
+  slides[currentSlide].classList.remove('active');
+  indicators[currentSlide].classList.remove('active');
+  currentSlide = index;
+  slides[currentSlide].classList.add('active');
+  indicators[currentSlide].classList.add('active');
+}
+
+indicators.forEach(ind => {
+  ind.addEventListener('click', () => {
+    goToSlide(parseInt(ind.dataset.slide));
+  });
+});
+
+setInterval(() => {
+  goToSlide((currentSlide + 1) % slides.length);
+}, 5000);
+
+// Scroll animations
+const observerOptions = {
+  threshold: 0.15,
+  rootMargin: '0px 0px -50px 0px'
+};
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, observerOptions);
+
+document.querySelectorAll('.fade-in, .fade-in-left, .fade-in-right, .stagger-children').forEach(el => {
+  observer.observe(el);
+});
+
+// Side nav active state
+const sections = document.querySelectorAll('section[id]');
+const sideNavLinks = document.querySelectorAll('.side-nav a');
+
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(section => {
+    const sectionTop = section.offsetTop - 200;
+    if (window.scrollY >= sectionTop) {
+      current = section.getAttribute('id');
+    }
+  });
+
+  sideNavLinks.forEach(link => {
+    link.classList.remove('active');
+    if (link.getAttribute('href') === '#' + current) {
+      link.classList.add('active');
+    }
+  });
+});
+
+// Mobile menu
+const menuToggle = document.getElementById('menuToggle');
+const mobileNav = document.getElementById('mobileNav');
+
+menuToggle.addEventListener('click', () => {
+  mobileNav.classList.toggle('open');
+});
+
+function closeMobileNav() {
+  mobileNav.classList.remove('open');
+}
+
+// Members filter (visual only for demo)
+document.querySelectorAll('.members-filter').forEach(filter => {
+  filter.addEventListener('click', () => {
+    document.querySelectorAll('.members-filter').forEach(f => f.classList.remove('active'));
+    filter.classList.add('active');
+  });
+});
+</script>
+
+</body>
+</html>
