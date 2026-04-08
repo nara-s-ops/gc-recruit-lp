@@ -8,6 +8,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<!-- 🌟 ADDED: GSAP & ScrollTrigger for Advanced Animations -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 <style>
 /* ============ RESET & VARIABLES ============ */
 :root {
@@ -24,7 +27,7 @@
   --white-50: rgba(255,255,255,0.5);
   --font-ja: "Noto Sans JP","Hiragino Kaku Gothic Pro",sans-serif;
   --font-en: "Inter","Arial",sans-serif;
-  --ease: cubic-bezier(.215, .61, .355, 1); /* NEU風のスムーズなイージングに変更 */
+  --ease: cubic-bezier(.215, .61, .355, 1);
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 html{font-size:16px;scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
@@ -56,67 +59,67 @@ ul,ol{list-style:none}
 /* SCROLL PROGRESS BAR */
 .scroll-progress { position: fixed; top: 0; left: 0; width: 0%; height: 3px; background: var(--accent); z-index: 1002; transition: width 0.1s; }
 
-/* ============ HERO / FIRST VIEW ============ */
-.hero{position:relative;width:100%;height:100vh;min-height:700px;overflow:hidden;background:var(--dark)}
-.hero-slider{position:absolute;inset:0;z-index:1}
-.hero-slide{position:absolute;inset:0;background-size:cover;background-position:center center;opacity:0;transform:scale(1.1);transition:opacity 1.6s ease-in-out, transform 6s linear}
-.hero-slide.active{opacity:1;transform:scale(1)}
-.hero-overlay{position:absolute;inset:0;background:rgba(0,0,0,.35);z-index:2}
-
-/* ============ ADDED: TEXT MARQUEE (NEU Style) ============ */
-.marquee-wrap {
-  position: absolute;
-  top: 50%; left: 50%;
-  width: 150vw; /* 画面幅より大きくして斜めに配置 */
-  transform: translate(-50%, -50%) rotate(-10deg);
-  z-index: 3; /* 背景画像の上、キャッチコピーの下 */
-  pointer-events: none;
+/* ============ HERO (NOT A HOTEL ARCHITECTS Style) ============ */
+.hero-nah {
+  background: var(--dark);
+  padding-top: 150px;
+  padding-bottom: 120px;
+  overflow: hidden;
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  opacity: 0.6; /* 透過させて背景と馴染ませる */
+  justify-content: center;
+  min-height: 120vh; /* スクロールさせる余裕を持たせる */
 }
-.marquee-line {
+.nah-row {
   display: flex;
-  width: 200%;
+  align-items: center;
   white-space: nowrap;
-}
-.marquee-text {
-  font-family: var(--font-en);
-  font-size: 7vw;
+  font-size: 8vw;
   font-weight: 900;
-  color: transparent;
-  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.4); /* 白抜きの文字 */
+  font-family: var(--font-en);
+  color: var(--white);
+  line-height: 1;
+  margin: 1.5vw 0;
   text-transform: uppercase;
-  padding-right: 2rem;
-  animation: marquee-scroll 25s linear infinite;
 }
-.marquee-line:nth-child(even) .marquee-text {
-  animation-direction: reverse;
-  color: rgba(255,255,255,0.05); /* 偶数行はうっすらと白く塗りつぶす */
-  -webkit-text-stroke: 0;
+/* 偶数行は白抜き文字にする */
+.nah-row:nth-child(even) {
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255,255,255,0.6);
 }
-@keyframes marquee-scroll {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); } /* 半分移動でループ */
+/* 初期位置を少しずらして動きをつける */
+.nah-row:nth-child(1) { transform: translateX(5vw); }
+.nah-row:nth-child(2) { transform: translateX(-15vw); }
+.nah-row:nth-child(3) { transform: translateX(-5vw); }
+.nah-row:nth-child(4) { transform: translateX(-25vw); }
+
+.nah-img-wrap {
+  width: 28vw;
+  height: 8vw; /* フォントサイズに合わせる */
+  margin: 0 3vw;
+  border-radius: 4vw;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+.nah-img {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.8s var(--ease);
+}
+.nah-img-wrap:hover .nah-img {
+  transform: scale(1.15); /* ホバー時の画像ズーム */
 }
 
-/* 「Join」手書きテキスト */
-.hero-join{position:absolute;z-index:4;left:5%;top:50%;transform:translateY(-50%);width:70%;pointer-events:none}
-.hero-join img{width:100%;height:auto;filter:drop-shadow(0 4px 24px rgba(0,0,0,.3))}
-@media(max-width:768px){.hero-join{width:90%;left:2%}.hero-join img{opacity:.7}}
-.hero-catch{position:absolute;right:120px;top:50%;transform:translateY(-50%);z-index:5;writing-mode:vertical-rl;font-size:42px;font-weight:900;color:var(--white);letter-spacing:.15em;line-height:1.8;text-shadow:0 2px 30px rgba(0,0,0,.4)}
-.hero-catch .sub{font-size:36px;color:var(--accent);margin-right:16px}
-.hero-side-right{position:absolute;right:30px;top:50%;transform:translateY(-50%);z-index:5;display:flex;flex-direction:column;align-items:center;gap:24px}
-.hero-side-right a{writing-mode:vertical-rl;font-family:var(--font-en);font-size:10px;color:var(--white-50);letter-spacing:.18em;text-transform:uppercase}
 .hero-scroll{position:absolute;right:30px;bottom:40px;z-index:5;display:flex;flex-direction:column;align-items:center;gap:8px;writing-mode:vertical-rl}
 .hero-scroll span{font-family:var(--font-en);font-size:9px;color:var(--white-50);letter-spacing:.2em;text-transform:uppercase}
 .hero-scroll-line{width:1px;height:50px;background:var(--white-50);position:relative;overflow:hidden;writing-mode:horizontal-tb}
 .hero-scroll-line::after{content:'';position:absolute;top:-100%;left:0;width:100%;height:100%;background:var(--white);animation:scrollAnim 2s ease-in-out infinite}
 @keyframes scrollAnim{0%{top:-100%}50%{top:0}100%{top:100%}}
-.hero-bottom{position:absolute;bottom:30px;left:40px;z-index:5;display:flex;gap:8px;align-items:center}
-.hero-bottom-bar{width:36px;height:2px;background:var(--white);transition:background .4s var(--ease)}
-.hero-bottom-bar.dim{background:var(--white-50)}
 
 /* ============ MESSAGE ============ */
 .message{background:var(--dark);padding:120px 0;position:relative}
@@ -249,13 +252,10 @@ ul,ol{list-style:none}
 .btn-more::after{content:'\2192';font-size:15px;transition:transform .4s var(--ease)}
 .btn-more:hover::after{transform:translateX(5px)}
 
-/* ============ SCROLL ANIMATIONS (NEU Style) ============ */
+/* ============ SCROLL ANIMATIONS ============ */
 @keyframes pulse { 0% { opacity: 0.5; transform: scale(0.95); } 50% { opacity: 1; transform: scale(1.05); } 100% { opacity: 0.5; transform: scale(0.95); } }
-
-/* 移動距離を長めにし、イージングを鋭くしてダイナミックに */
 .fade-in{opacity:0;transform:translateY(60px);transition:opacity 1s var(--ease),transform 1s var(--ease)}
 .fade-in.visible{opacity:1;transform:translateY(0)}
-
 .stagger>*{opacity:0;transform:translateY(40px);transition:opacity 0.8s var(--ease),transform 0.8s var(--ease)}
 .stagger.visible>*{opacity:1;transform:translateY(0)}
 .stagger.visible>*:nth-child(1){transition-delay:0s}
@@ -265,31 +265,60 @@ ul,ol{list-style:none}
 .stagger.visible>*:nth-child(5){transition-delay:.25s}
 .stagger.visible>*:nth-child(6){transition-delay:.3s}
 
-/* ============ LOADER WIPE ANIMATION (NEU Style) ============ */
+/* ============ LOADER WIPE ANIMATION ============ */
 .loader-wrapper { 
   position: fixed; inset: 0; z-index: 9999; 
   background: var(--dark);
   display: flex; align-items: center; justify-content: center;
-  transition: transform 1.2s cubic-bezier(0.85, 0, 0.15, 1); /* 一気に上に抜けるイージング */
+  transition: transform 1.2s cubic-bezier(0.85, 0, 0.15, 1); 
 }
 .loader-wrapper.loaded { transform: translateY(-100%); }
 .loader-logo { transition: opacity 0.4s ease; animation: pulse 1.5s infinite ease-in-out; }
 .loader-wrapper.loaded .loader-logo { opacity: 0; animation: none; }
 
-/* ============ CUSTOM CURSOR ============ */
+/* ============ CUSTOM CURSOR (Enhanced for Text) ============ */
 @media (pointer: fine) {
   body { cursor: none; }
   .cursor, .cursor-follower { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 10000; border-radius: 50%; transform: translate(-50%, -50%); }
-  .cursor { width: 6px; height: 6px; background: var(--accent); }
-  .cursor-follower { width: 36px; height: 36px; border: 1px solid var(--accent); transition: width 0.3s ease, height 0.3s ease, background 0.3s ease, border-color 0.3s ease; }
+  
+  /* Cursor base */
+  .cursor { 
+    width: 6px; height: 6px; background: var(--accent); 
+    display: flex; align-items: center; justify-content: center;
+    transition: width 0.3s ease, height 0.3s ease, border-radius 0.3s ease, background 0.3s ease;
+  }
+  
+  /* Text inside cursor for hover state */
+  .cursor-text {
+    color: var(--dark);
+    font-size: 11px;
+    font-weight: 800;
+    font-family: var(--font-en);
+    letter-spacing: 0.1em;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    white-space: nowrap;
+    display: none;
+  }
+  
+  /* When hovering over images (NOT A HOTEL Style) */
+  .cursor.show-text {
+    width: auto; height: 32px; padding: 0 16px; border-radius: 16px;
+    background: var(--accent);
+  }
+  .cursor.show-text .cursor-text {
+    opacity: 1; display: block;
+  }
+
+  .cursor-follower { width: 36px; height: 36px; border: 1px solid var(--accent); transition: width 0.3s ease, height 0.3s ease, background 0.3s ease, border-color 0.3s ease, opacity 0.3s ease; }
   .cursor.is-hover { opacity: 0; }
   .cursor-follower.is-hover { width: 64px; height: 64px; background: rgba(203, 152, 77, 0.1); border-color: rgba(203, 152, 77, 0.4); backdrop-filter: blur(2px); }
 }
 
 /* ============ RESPONSIVE ============ */
 @media(max-width:1024px){
-  .hero-catch{right:80px;font-size:34px}
-  .hero-catch .sub{font-size:28px}
+  .nah-row { font-size: 10vw; margin: 2.5vw 0; }
+  .nah-img-wrap { width: 32vw; height: 10vw; border-radius: 5vw; }
   .company-cards,.guidelines-grid{grid-template-columns:1fr}
   .jobs-grid,.members-grid{grid-template-columns:repeat(2,1fr)}
   .footer-inner{grid-template-columns:1fr}
@@ -300,12 +329,9 @@ ul,ol{list-style:none}
   .header-inner{height:60px}
   .header-nav,.header-label{display:none}
   .menu-toggle{display:block}
-  .hero{min-height:600px}
-  .hero-catch{right:60px;font-size:26px}
-  .hero-catch .sub{font-size:22px;margin-right:10px}
-  .hero-side-right{display:none}
-  .hero-join{width:90%;left:2%}
-  .hero-join img{opacity:.7}
+  .hero-nah { min-height: 80vh; padding-top: 100px; }
+  .nah-row { font-size: 14vw; margin: 4vw 0; }
+  .nah-img-wrap { width: 40vw; height: 14vw; border-radius: 7vw; margin: 0 4vw; }
   .container{padding:0 20px}
   .section{padding:72px 0}
   .section-title{font-size:26px}
@@ -328,14 +354,17 @@ ul,ol{list-style:none}
 </head>
 <body>
 
-<!-- ADDED: SCROLL PROGRESS BAR -->
+<!-- SCROLL PROGRESS BAR -->
 <div class="scroll-progress" id="scrollProgress"></div>
 
 <!-- CUSTOM CURSOR DOM -->
-<div class="cursor" id="cursor"></div>
+<div class="cursor" id="cursor">
+  <!-- Text inside cursor for hover state -->
+  <span class="cursor-text" id="cursor-text"></span>
+</div>
 <div class="cursor-follower" id="cursor-follower"></div>
 
-<!-- MODIFIED: WIPE UP LOADER (NEU style) -->
+<!-- WIPE UP LOADER -->
 <div class="loader-wrapper" id="loaderWrapper">
   <img src="gc-logo.png" alt="Grand Central" class="loader-logo">
 </div>
@@ -369,44 +398,41 @@ ul,ol{list-style:none}
   <a href="#entry" onclick="closeMobile()">エントリー</a>
 </div>
 
-<!-- ======== HERO ======== -->
-<section class="hero" id="hero">
-  <div class="hero-slider">
-    <div class="hero-slide active" style="background-image:url('top-01.jpg')"></div>
-    <div class="hero-slide" style="background-image:url('top-02.jpg')"></div>
-    <div class="hero-slide" style="background-image:url('top-03.jpg')"></div>
-    <div class="hero-slide" style="background-image:url('top-04.jpg')"></div>
-    <div class="hero-slide" style="background-image:url('top-05.jpg')"></div>
-    <div class="hero-slide" style="background-image:url('top-06.jpg')"></div>
-    <div class="hero-slide" style="background-image:url('top-07.jpg')"></div>
-    <div class="hero-slide" style="background-image:url('top-08.jpg')"></div>
-  </div>
-  <div class="hero-overlay"></div>
-
-  <!-- ADDED: TEXT MARQUEE (NEU Style) -->
-  <div class="marquee-wrap">
-    <div class="marquee-line">
-      <div class="marquee-text">GRAND CENTRAL SALES CONSULTING GRAND CENTRAL SALES CONSULTING </div>
-      <div class="marquee-text">GRAND CENTRAL SALES CONSULTING GRAND CENTRAL SALES CONSULTING </div>
+<!-- 🌟 NEW HERO (NOT A HOTEL ARCHITECTS Style) -->
+<section class="hero-nah" id="hero">
+  
+  <div class="nah-row">
+    <span class="nah-text">GRAND CENTRAL</span>
+    <!-- 画像ブロックにdata-hoverを持たせることで、ホバー時にカーソルに文字を出す -->
+    <div class="nah-img-wrap" data-hover="SALES CONSULTING">
+      <div class="nah-img" style="background-image:url('https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=800&q=80')"></div>
     </div>
-    <div class="marquee-line">
-      <div class="marquee-text">HACK TO WIN, DIVE TO NEW WORLD HACK TO WIN, DIVE TO NEW WORLD </div>
-      <div class="marquee-text">HACK TO WIN, DIVE TO NEW WORLD HACK TO WIN, DIVE TO NEW WORLD </div>
+    <span class="nah-text">SALES CONSULTING</span>
+  </div>
+
+  <div class="nah-row">
+    <span class="nah-text">HACK TO WIN</span>
+    <div class="nah-img-wrap" data-hover="INSIDE SALES">
+      <div class="nah-img" style="background-image:url('https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=800&q=80')"></div>
     </div>
+    <span class="nah-text">DIVE TO NEW WORLD</span>
   </div>
 
-  <div class="hero-join">
-    <img src="join-us.svg" alt="Join Us">
+  <div class="nah-row">
+    <div class="nah-img-wrap" data-hover="BUSINESS DEV">
+      <div class="nah-img" style="background-image:url('https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=800&q=80')"></div>
+    </div>
+    <span class="nah-text">PROFESSIONAL</span>
+    <span class="nah-text">OUTSOURCING</span>
   </div>
 
-  <div class="hero-catch">
-    <span>営業の力で、</span><br>
-    <span class="sub">未来を創る。</span>
-  </div>
-
-  <div class="hero-side-right">
-    <a href="#">CORPORATE SITE</a>
-    <a href="#">X</a>
+  <div class="nah-row">
+    <span class="nah-text">MARKETING</span>
+    <span class="nah-text">&</span>
+    <div class="nah-img-wrap" data-hover="RECRUIT">
+      <div class="nah-img" style="background-image:url('https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=800&q=80')"></div>
+    </div>
+    <span class="nah-text">RECRUITING</span>
   </div>
 
   <div class="hero-scroll">
@@ -414,16 +440,6 @@ ul,ol{list-style:none}
     <div class="hero-scroll-line"></div>
   </div>
 
-  <div class="hero-bottom" id="heroIndicators">
-    <div class="hero-bottom-bar"></div>
-    <div class="hero-bottom-bar dim"></div>
-    <div class="hero-bottom-bar dim"></div>
-    <div class="hero-bottom-bar dim"></div>
-    <div class="hero-bottom-bar dim"></div>
-    <div class="hero-bottom-bar dim"></div>
-    <div class="hero-bottom-bar dim"></div>
-    <div class="hero-bottom-bar dim"></div>
-  </div>
 </section>
 
 <!-- ======== MESSAGE ======== -->
@@ -450,7 +466,6 @@ ul,ol{list-style:none}
     </div>
     <div class="company-cards stagger">
       <a href="#" class="company-card">
-        <!-- ADDED: reveal-img-wrap for masking effect -->
         <div class="reveal-img-wrap"><div class="company-card-img bg-img">IMAGE: 数字で見るGC</div></div>
         <div class="company-card-body">
           <div class="company-card-title">数字で見るGrand Central・成長の軌跡</div>
@@ -472,7 +487,6 @@ ul,ol{list-style:none}
       <p class="section-desc">Grand Centralには、営業戦略から実行まで多様な職種と働き方が存在します。一人ひとりが担う職種とその役割をご紹介いたします。</p>
     </div>
     <div class="jobs-grid stagger">
-      <!-- ALL IMAGES WRAPPED with reveal-img-wrap -->
       <a href="#" class="job-card"><div class="reveal-img-wrap"><div class="job-card-img bg-img">PHOTO</div></div><div class="job-card-body"><div class="job-card-name">セールスコンサルタント職</div><div class="job-card-desc">クライアント企業の営業課題を分析し、戦略立案から実行支援まで一気通貫で担う。BtoB営業のプロフェッショナルとして売上拡大を実現する。</div></div></a>
       <a href="#" class="job-card"><div class="reveal-img-wrap"><div class="job-card-img bg-img">PHOTO</div></div><div class="job-card-body"><div class="job-card-name">インサイドセールス職</div><div class="job-card-desc">電話・メール・オンラインを駆使しターゲット企業との接点を創出。質の高い商談機会を創り出し、営業パイプラインを拡大する。</div></div></a>
       <a href="#" class="job-card"><div class="reveal-img-wrap"><div class="job-card-img bg-img">PHOTO</div></div><div class="job-card-body"><div class="job-card-name">マーケティング職</div><div class="job-card-desc">SEO、広告運用、SNS、コンテンツマーケティングを駆使し、自社及びクライアントのリード獲得・認知拡大を推進する。</div></div></a>
@@ -603,40 +617,39 @@ window.addEventListener('scroll', () => {
 const header=document.getElementById('header');
 window.addEventListener('scroll',()=>{header.classList.toggle('scrolled',scrollY>50)});
 
-/* ---- Hero Image Carousel ---- */
-(function(){
-  const slides=document.querySelectorAll('.hero-slide');
-  const bars=document.querySelectorAll('#heroIndicators .hero-bottom-bar');
-  let current=0;
-  const total=slides.length;
-  const interval=4000;
-
-  function goTo(idx){
-    slides[current].classList.remove('active');
-    bars[current].classList.add('dim');
-    current=idx%total;
-    slides[current].classList.add('active');
-    bars[current].classList.remove('dim');
-  }
-
-  bars.forEach((bar,i)=>{
-    bar.style.cursor='pointer';
-    bar.addEventListener('click',()=>{ goTo(i); clearInterval(timer); timer=setInterval(()=>goTo(current+1),interval); });
-  });
-
-  let timer=setInterval(()=>goTo(current+1),interval);
-})();
-
-/* ---- Loader Wipe Animation (NEU Style) ---- */
+/* ---- Loader Wipe Animation ---- */
 window.addEventListener('load', () => {
   setTimeout(() => {
     const loaderWrapper = document.getElementById('loaderWrapper');
     loaderWrapper.classList.add('loaded');
     setTimeout(() => {
       loaderWrapper.style.display = 'none';
-    }, 1200); // ワイプアウト完了後に非表示
+      initGSAP(); // ローディングが終わってからGSAPを初期化
+    }, 1200); 
   }, 800); 
 });
+
+/* 🌟 ADDED: GSAP Animations for Hero Section */
+function initGSAP() {
+  if (typeof gsap !== 'undefined') {
+    gsap.registerPlugin(ScrollTrigger);
+    
+    // スクロールに合わせてタイポグラフィ行を左右に動かす
+    gsap.utils.toArray('.nah-row').forEach((row, i) => {
+      const dir = i % 2 === 0 ? -1 : 1; // 偶数行は左へ、奇数行は右へ
+      gsap.to(row, {
+        x: () => dir * (window.innerWidth * 0.4), // 画面幅の40%分移動
+        ease: "none",
+        scrollTrigger: {
+          trigger: ".hero-nah",
+          start: "top top",
+          end: "bottom top",
+          scrub: 1 // スクロールにピタッと連動
+        }
+      });
+    });
+  }
+}
 
 // 見出し（h2）を動的にラップしてスライドイン（Reveal）効果を付ける
 document.querySelectorAll('.section-title').forEach(el => {
@@ -649,14 +662,12 @@ const obs = new IntersectionObserver(entries => {
   entries.forEach(e => {
     if(e.isIntersecting){
       e.target.classList.add('visible');
-      // テキスト発火
       const revealTexts = e.target.querySelectorAll('.reveal-text');
       revealTexts.forEach(rt => rt.style.transform = 'translateY(0)');
     }
   })
 }, {threshold: 0.1, rootMargin: '0px 0px -50px 0px'});
 
-// 監視要素の登録
 document.querySelectorAll('.fade-in, .stagger, .reveal-img-wrap').forEach(el => obs.observe(el));
 
 document.querySelectorAll('.members-filter').forEach(f=>{f.addEventListener('click',()=>{document.querySelectorAll('.members-filter').forEach(x=>x.classList.remove('active'));f.classList.add('active')})});
@@ -665,10 +676,12 @@ const mobileNav=document.getElementById('mobileNav');
 toggle.addEventListener('click',()=>mobileNav.classList.toggle('open'));
 function closeMobile(){mobileNav.classList.remove('open')}
 
-/* ---- Custom Cursor & Magnet Effect ---- */
+/* ---- Custom Cursor & Magnet Effect (Enhanced for text reveal) ---- */
 if (window.matchMedia("(pointer: fine)").matches) {
   const cursor = document.getElementById('cursor');
   const follower = document.getElementById('cursor-follower');
+  const cursorTextEl = document.getElementById('cursor-text');
+  
   let mouseX = 0, mouseY = 0;
   let followerX = 0, followerY = 0;
 
@@ -686,7 +699,7 @@ if (window.matchMedia("(pointer: fine)").matches) {
   };
   requestAnimationFrame(renderCursor);
 
-  // リンクやボタンのホバー判定
+  // 既存のリンクやボタンホバー
   const hoverElements = document.querySelectorAll('a, button, .members-filter');
   hoverElements.forEach(el => {
     el.addEventListener('mouseenter', () => {
@@ -696,10 +709,23 @@ if (window.matchMedia("(pointer: fine)").matches) {
     el.addEventListener('mouseleave', () => {
       cursor.classList.remove('is-hover');
       follower.classList.remove('is-hover');
-      // マグネットリセット
       if(el.classList.contains('btn-more') || el.classList.contains('header-entry')){
         el.style.transform = '';
       }
+    });
+  });
+
+  // 🌟 NEW: タイポグラフィ内の画像ホバーで文字を出すエフェクト
+  const nahImages = document.querySelectorAll('.nah-img-wrap');
+  nahImages.forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.classList.add('show-text');
+      follower.style.opacity = '0'; // 外側のリングを隠す
+      cursorTextEl.textContent = el.getAttribute('data-hover'); // data-hoverの文字をセット
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.classList.remove('show-text');
+      follower.style.opacity = '1';
     });
   });
 
@@ -708,10 +734,8 @@ if (window.matchMedia("(pointer: fine)").matches) {
   magnetBtns.forEach(btn => {
     btn.addEventListener('mousemove', (e) => {
       const rect = btn.getBoundingClientRect();
-      // ボタンの中心点からのマウスの距離を計算
       const x = e.clientX - rect.left - rect.width / 2;
       const y = e.clientY - rect.top - rect.height / 2;
-      // 距離に応じてボタンを少しずらす（係数0.3で調整）
       btn.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
     });
   });
