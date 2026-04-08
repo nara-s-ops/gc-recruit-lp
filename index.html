@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-<!-- 🌟 ADDED: GSAP & ScrollTrigger for Advanced Animations -->
+<!-- GSAP & ScrollTrigger -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 <style>
@@ -59,62 +59,57 @@ ul,ol{list-style:none}
 /* SCROLL PROGRESS BAR */
 .scroll-progress { position: fixed; top: 0; left: 0; width: 0%; height: 3px; background: var(--accent); z-index: 1002; transition: width 0.1s; }
 
-/* ============ HERO (NOT A HOTEL ARCHITECTS Style) ============ */
-.hero-nah {
-  background: var(--dark);
-  padding-top: 150px;
-  padding-bottom: 120px;
-  overflow: hidden;
+/* ============ HERO MASK EFFECT (TEXT CLIPPING) ============ */
+.hero-mask {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  min-height: 120vh; /* スクロールさせる余裕を持たせる */
-}
-.nah-row {
-  display: flex;
-  align-items: center;
-  white-space: nowrap;
-  font-size: 8vw;
-  font-weight: 900;
-  font-family: var(--font-en);
-  color: var(--white);
-  line-height: 1;
-  margin: 1.5vw 0;
-  text-transform: uppercase;
-}
-/* 偶数行は白抜き文字にする */
-.nah-row:nth-child(even) {
-  color: transparent;
-  -webkit-text-stroke: 1px rgba(255,255,255,0.6);
-}
-/* 初期位置を少しずらして動きをつける */
-.nah-row:nth-child(1) { transform: translateX(5vw); }
-.nah-row:nth-child(2) { transform: translateX(-15vw); }
-.nah-row:nth-child(3) { transform: translateX(-5vw); }
-.nah-row:nth-child(4) { transform: translateX(-25vw); }
-
-.nah-img-wrap {
-  width: 28vw;
-  height: 8vw; /* フォントサイズに合わせる */
-  margin: 0 3vw;
-  border-radius: 4vw;
-  overflow: hidden;
-  position: relative;
-  flex-shrink: 0;
-  cursor: pointer;
-}
-.nah-img {
   width: 100%;
-  height: 100%;
+  height: 250vh; /* スクロールアニメーション用の余白 */
+  background: var(--dark);
+}
+.hero-mask-sticky {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+.hero-mask-zoom-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100vw;
+  height: 100vh;
+  will-change: transform, opacity;
+}
+/* 巨大な文字をマスクにする */
+.mask-text-layer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  font-family: var(--font-en);
+  font-size: 16vw; /* 画面幅に応じた巨大なサイズ */
+  font-weight: 900;
+  line-height: 0.85;
+  letter-spacing: -0.02em;
+  text-align: center;
+  margin: 0;
+  text-transform: uppercase;
+  color: transparent; /* 文字色を透明に */
+  
+  /* 背景画像を指定し、文字の形に切り抜く */
   background-size: cover;
   background-position: center;
-  transition: transform 0.8s var(--ease);
-}
-.nah-img-wrap:hover .nah-img {
-  transform: scale(1.15); /* ホバー時の画像ズーム */
+  background-repeat: no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  
+  transition: opacity 1.6s ease-in-out;
 }
 
+/* スクロールダウンのUI */
 .hero-scroll{position:absolute;right:30px;bottom:40px;z-index:5;display:flex;flex-direction:column;align-items:center;gap:8px;writing-mode:vertical-rl}
 .hero-scroll span{font-family:var(--font-en);font-size:9px;color:var(--white-50);letter-spacing:.2em;text-transform:uppercase}
 .hero-scroll-line{width:1px;height:50px;background:var(--white-50);position:relative;overflow:hidden;writing-mode:horizontal-tb}
@@ -276,40 +271,17 @@ ul,ol{list-style:none}
 .loader-logo { transition: opacity 0.4s ease; animation: pulse 1.5s infinite ease-in-out; }
 .loader-wrapper.loaded .loader-logo { opacity: 0; animation: none; }
 
-/* ============ CUSTOM CURSOR (Enhanced for Text) ============ */
+/* ============ CUSTOM CURSOR ============ */
 @media (pointer: fine) {
   body { cursor: none; }
   .cursor, .cursor-follower { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 10000; border-radius: 50%; transform: translate(-50%, -50%); }
   
-  /* Cursor base */
   .cursor { 
     width: 6px; height: 6px; background: var(--accent); 
     display: flex; align-items: center; justify-content: center;
     transition: width 0.3s ease, height 0.3s ease, border-radius 0.3s ease, background 0.3s ease;
   }
   
-  /* Text inside cursor for hover state */
-  .cursor-text {
-    color: var(--dark);
-    font-size: 11px;
-    font-weight: 800;
-    font-family: var(--font-en);
-    letter-spacing: 0.1em;
-    opacity: 0;
-    transition: opacity 0.2s ease;
-    white-space: nowrap;
-    display: none;
-  }
-  
-  /* When hovering over images (NOT A HOTEL Style) */
-  .cursor.show-text {
-    width: auto; height: 32px; padding: 0 16px; border-radius: 16px;
-    background: var(--accent);
-  }
-  .cursor.show-text .cursor-text {
-    opacity: 1; display: block;
-  }
-
   .cursor-follower { width: 36px; height: 36px; border: 1px solid var(--accent); transition: width 0.3s ease, height 0.3s ease, background 0.3s ease, border-color 0.3s ease, opacity 0.3s ease; }
   .cursor.is-hover { opacity: 0; }
   .cursor-follower.is-hover { width: 64px; height: 64px; background: rgba(203, 152, 77, 0.1); border-color: rgba(203, 152, 77, 0.4); backdrop-filter: blur(2px); }
@@ -317,8 +289,7 @@ ul,ol{list-style:none}
 
 /* ============ RESPONSIVE ============ */
 @media(max-width:1024px){
-  .nah-row { font-size: 10vw; margin: 2.5vw 0; }
-  .nah-img-wrap { width: 32vw; height: 10vw; border-radius: 5vw; }
+  .mask-text-layer { font-size: 20vw; }
   .company-cards,.guidelines-grid{grid-template-columns:1fr}
   .jobs-grid,.members-grid{grid-template-columns:repeat(2,1fr)}
   .footer-inner{grid-template-columns:1fr}
@@ -329,9 +300,8 @@ ul,ol{list-style:none}
   .header-inner{height:60px}
   .header-nav,.header-label{display:none}
   .menu-toggle{display:block}
-  .hero-nah { min-height: 80vh; padding-top: 100px; }
-  .nah-row { font-size: 14vw; margin: 4vw 0; }
-  .nah-img-wrap { width: 40vw; height: 14vw; border-radius: 7vw; margin: 0 4vw; }
+  .hero-mask { height: 150vh; }
+  .mask-text-layer { font-size: 24vw; }
   .container{padding:0 20px}
   .section{padding:72px 0}
   .section-title{font-size:26px}
@@ -358,10 +328,7 @@ ul,ol{list-style:none}
 <div class="scroll-progress" id="scrollProgress"></div>
 
 <!-- CUSTOM CURSOR DOM -->
-<div class="cursor" id="cursor">
-  <!-- Text inside cursor for hover state -->
-  <span class="cursor-text" id="cursor-text"></span>
-</div>
+<div class="cursor" id="cursor"></div>
 <div class="cursor-follower" id="cursor-follower"></div>
 
 <!-- WIPE UP LOADER -->
@@ -398,48 +365,19 @@ ul,ol{list-style:none}
   <a href="#entry" onclick="closeMobile()">エントリー</a>
 </div>
 
-<!-- 🌟 NEW HERO (NOT A HOTEL ARCHITECTS Style) -->
-<section class="hero-nah" id="hero">
+<!-- 🌟 NEW TEXT MASK HERO -->
+<section class="hero-mask" id="hero">
+  <div class="hero-mask-sticky">
+    <div class="hero-mask-zoom-container">
+      <div class="mask-text-layer" id="maskLayer1">GRAND<br>CENTRAL</div>
+      <div class="mask-text-layer" id="maskLayer2">GRAND<br>CENTRAL</div>
+    </div>
+  </div>
   
-  <div class="nah-row">
-    <span class="nah-text">GRAND CENTRAL</span>
-    <!-- 画像ブロックにdata-hoverを持たせることで、ホバー時にカーソルに文字を出す -->
-    <div class="nah-img-wrap" data-hover="SALES CONSULTING">
-      <div class="nah-img" style="background-image:url('https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=800&q=80')"></div>
-    </div>
-    <span class="nah-text">SALES CONSULTING</span>
-  </div>
-
-  <div class="nah-row">
-    <span class="nah-text">HACK TO WIN</span>
-    <div class="nah-img-wrap" data-hover="INSIDE SALES">
-      <div class="nah-img" style="background-image:url('https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=800&q=80')"></div>
-    </div>
-    <span class="nah-text">DIVE TO NEW WORLD</span>
-  </div>
-
-  <div class="nah-row">
-    <div class="nah-img-wrap" data-hover="BUSINESS DEV">
-      <div class="nah-img" style="background-image:url('https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=800&q=80')"></div>
-    </div>
-    <span class="nah-text">PROFESSIONAL</span>
-    <span class="nah-text">OUTSOURCING</span>
-  </div>
-
-  <div class="nah-row">
-    <span class="nah-text">MARKETING</span>
-    <span class="nah-text">&</span>
-    <div class="nah-img-wrap" data-hover="RECRUIT">
-      <div class="nah-img" style="background-image:url('https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=800&q=80')"></div>
-    </div>
-    <span class="nah-text">RECRUITING</span>
-  </div>
-
   <div class="hero-scroll">
     <span>SCROLL DOWN</span>
     <div class="hero-scroll-line"></div>
   </div>
-
 </section>
 
 <!-- ======== MESSAGE ======== -->
@@ -629,24 +567,60 @@ window.addEventListener('load', () => {
   }, 800); 
 });
 
+/* ---- Hero Mask Image Carousel ---- */
+const heroImages = [
+  'url("top-01.jpg")',
+  'url("top-02.jpg")',
+  'url("top-03.jpg")',
+  'url("top-04.jpg")',
+  'url("top-05.jpg")',
+  'url("top-06.jpg")',
+  'url("top-07.jpg")',
+  'url("top-08.jpg")'
+];
+let currentImgIndex = 0;
+const layer1 = document.getElementById('maskLayer1');
+const layer2 = document.getElementById('maskLayer2');
+let activeLayer = 1;
+
+// 初期化
+layer1.style.backgroundImage = heroImages[0];
+layer2.style.backgroundImage = heroImages[1];
+layer2.style.opacity = 0;
+
+setInterval(() => {
+  currentImgIndex = (currentImgIndex + 1) % heroImages.length;
+  const nextImgUrl = heroImages[currentImgIndex];
+  
+  if (activeLayer === 1) {
+    layer2.style.backgroundImage = nextImgUrl;
+    layer2.style.opacity = 1;
+    layer1.style.opacity = 0;
+    activeLayer = 2;
+  } else {
+    layer1.style.backgroundImage = nextImgUrl;
+    layer1.style.opacity = 1;
+    layer2.style.opacity = 0;
+    activeLayer = 1;
+  }
+}, 4000);
+
 /* 🌟 ADDED: GSAP Animations for Hero Section */
 function initGSAP() {
   if (typeof gsap !== 'undefined') {
     gsap.registerPlugin(ScrollTrigger);
     
-    // スクロールに合わせてタイポグラフィ行を左右に動かす
-    gsap.utils.toArray('.nah-row').forEach((row, i) => {
-      const dir = i % 2 === 0 ? -1 : 1; // 偶数行は左へ、奇数行は右へ
-      gsap.to(row, {
-        x: () => dir * (window.innerWidth * 0.4), // 画面幅の40%分移動
-        ease: "none",
-        scrollTrigger: {
-          trigger: ".hero-nah",
-          start: "top top",
-          end: "bottom top",
-          scrub: 1 // スクロールにピタッと連動
-        }
-      });
+    // スクロールに合わせて「マスク文字のコンテナ」自体をズームインさせる
+    gsap.to('.hero-mask-zoom-container', {
+      scale: 30, // どんどん大きくなる
+      opacity: 0, // 最終的に消えて次のセクションへ
+      ease: "power2.in",
+      scrollTrigger: {
+        trigger: ".hero-mask",
+        start: "top top",
+        end: "bottom top",
+        scrub: true // スクロールにピタッと連動
+      }
     });
   }
 }
@@ -676,11 +650,10 @@ const mobileNav=document.getElementById('mobileNav');
 toggle.addEventListener('click',()=>mobileNav.classList.toggle('open'));
 function closeMobile(){mobileNav.classList.remove('open')}
 
-/* ---- Custom Cursor & Magnet Effect (Enhanced for text reveal) ---- */
+/* ---- Custom Cursor & Magnet Effect ---- */
 if (window.matchMedia("(pointer: fine)").matches) {
   const cursor = document.getElementById('cursor');
   const follower = document.getElementById('cursor-follower');
-  const cursorTextEl = document.getElementById('cursor-text');
   
   let mouseX = 0, mouseY = 0;
   let followerX = 0, followerY = 0;
@@ -712,20 +685,6 @@ if (window.matchMedia("(pointer: fine)").matches) {
       if(el.classList.contains('btn-more') || el.classList.contains('header-entry')){
         el.style.transform = '';
       }
-    });
-  });
-
-  // 🌟 NEW: タイポグラフィ内の画像ホバーで文字を出すエフェクト
-  const nahImages = document.querySelectorAll('.nah-img-wrap');
-  nahImages.forEach(el => {
-    el.addEventListener('mouseenter', () => {
-      cursor.classList.add('show-text');
-      follower.style.opacity = '0'; // 外側のリングを隠す
-      cursorTextEl.textContent = el.getAttribute('data-hover'); // data-hoverの文字をセット
-    });
-    el.addEventListener('mouseleave', () => {
-      cursor.classList.remove('show-text');
-      follower.style.opacity = '1';
     });
   });
 
